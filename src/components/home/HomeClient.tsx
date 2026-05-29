@@ -1,10 +1,6 @@
 "use client"
 
 import { getAllCategories } from "@/lib/content-loader"
-import {
-    SAMPLE_STROM_GAS_TABLE,
-    SAMPLE_KREDITKARTEN_TABLE,
-} from "@/lib/sample-data"
 import { SEO_CONFIG } from "@/lib/seo"
 import { useConfetti } from "./Confetti"
 import ConfettiOverlay from "./Confetti"
@@ -15,6 +11,7 @@ import GamificationBadges from "./GamificationBadges"
 import Mascot from "./Mascot"
 import TechDeals from "@/components/affiliate/TechDeals"
 import DigistoreDeals from "@/components/affiliate/DigistoreDeals"
+import Check24CategoryCards from "@/components/home/Check24CategoryCards"
 
 // ─── Lounge-Style Category Sayings ─────────────────────────────────────
 const CATEGORY_CLAIMS: Record<string, string> = {
@@ -229,128 +226,8 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ─── Featured Comparison Preview ──────────────────────────── */}
-            <section className="relative overflow-hidden bg-zinc-950 py-16 sm:py-24">
-                {/* Warm accent glow */}
-                <div className="absolute top-0 left-1/4 right-1/4 h-px animate-shimmer-gold" />
-                <div className="absolute bottom-0 left-1/4 right-1/4 h-px animate-shimmer-gold" />
-
-                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="text-center">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-amber-800/40 bg-amber-950/30 px-4 py-1 text-sm font-medium text-amber-400">
-                            📊 Lounge-Highlights
-                        </span>
-                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-100">
-                            Beliebte Vergleiche
-                        </h2>
-                        <p className="mt-3 text-lg text-zinc-500">
-                            Die Dauerbrenner auf unserer Lounge-Karte! 🔥
-                        </p>
-                    </div>
-
-                    <div className="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-2">
-                        {/* Strom/Gas */}
-                        <div className="group rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 shadow-sm transition-all duration-300 hover:border-amber-700/60 hover:shadow-lg hover:shadow-amber-900/10 lounge-card">
-                            <h3 className="flex items-center gap-2 text-xl font-semibold text-zinc-100">
-                                ⚡ Stromtarife
-                                <span className="text-sm font-normal text-amber-500 opacity-0 transition-opacity group-hover:opacity-100">
-                                    Heißer Tipp! 🔥
-                                </span>
-                            </h3>
-                            <div className="mt-4 overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b border-zinc-800">
-                                            <th className="py-2 text-left font-medium text-zinc-500">Anbieter</th>
-                                            <th className="py-2 text-right font-medium text-zinc-500">Jahreskosten</th>
-                                            <th className="py-2 text-right font-medium text-zinc-500">Bonus</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {SAMPLE_STROM_GAS_TABLE.rows.slice(0, 3).map((row) => (
-                                            <tr key={row.name} className="border-b border-zinc-800/50 transition-colors hover:bg-zinc-800/30">
-                                                <td className="py-3">
-                                                    <div className="font-medium text-zinc-200">{row.name}</div>
-                                                    <div className="text-xs text-zinc-500">{row.description}</div>
-                                                </td>
-                                                <td className="py-3 text-right font-medium text-zinc-200">
-                                                    {typeof row.values.jahreskosten === "number"
-                                                        ? `${row.values.jahreskosten.toFixed(2)} €`
-                                                        : row.values.jahreskosten}
-                                                </td>
-                                                <td className="py-3 text-right font-medium text-amber-400">
-                                                    {typeof row.values.wechselbonus === "number"
-                                                        ? `${row.values.wechselbonus} €`
-                                                        : row.values.wechselbonus}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button
-                                onClick={() => fire(30, 60)}
-                                className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-amber-400 transition-all hover:gap-2 hover:text-amber-300"
-                            >
-                                Alle Stromtarife vergleichen →
-                            </button>
-                        </div>
-
-                        {/* Kreditkarten */}
-                        <div className="group rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 shadow-sm transition-all duration-300 hover:border-amber-700/60 hover:shadow-lg hover:shadow-amber-900/10 lounge-card">
-                            <h3 className="flex items-center gap-2 text-xl font-semibold text-zinc-100">
-                                💳 Kreditkarten
-                                <span className="text-sm font-normal text-amber-500 opacity-0 transition-opacity group-hover:opacity-100">
-                                    Gebührenfrei! 🎉
-                                </span>
-                            </h3>
-                            <div className="mt-4 overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b border-zinc-800">
-                                            <th className="py-2 text-left font-medium text-zinc-500">Karte</th>
-                                            <th className="py-2 text-right font-medium text-zinc-500">Jahresgebühr</th>
-                                            <th className="py-2 text-right font-medium text-zinc-500">Bonus</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {SAMPLE_KREDITKARTEN_TABLE.rows.slice(0, 3).map((row) => (
-                                            <tr key={row.name} className="border-b border-zinc-800/50 transition-colors hover:bg-zinc-800/30">
-                                                <td className="py-3">
-                                                    <div className="font-medium text-zinc-200">{row.name}</div>
-                                                    <div className="text-xs text-zinc-500">{row.description}</div>
-                                                </td>
-                                                <td className="py-3 text-right font-medium text-zinc-200">
-                                                    {typeof row.values.jahresgebuehr === "number" && row.values.jahresgebuehr === 0
-                                                        ? "Kostenlos 🎉"
-                                                        : `${row.values.jahresgebuehr} €`}
-                                                </td>
-                                                <td className="py-3 text-right font-medium text-amber-400">
-                                                    {typeof row.values.bonus === "number" && row.values.bonus > 0
-                                                        ? `${row.values.bonus} €`
-                                                        : "-"}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button
-                                onClick={() => fire(70, 60)}
-                                className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-amber-400 transition-all hover:gap-2 hover:text-amber-300"
-                            >
-                                Alle Kreditkarten vergleichen →
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="mt-8 text-center">
-                        <p className="text-sm text-zinc-500 italic">
-                            &bdquo;Vergleichen ist wie Cocktail probieren – einmal anfangen, willste nicht mehr aufhören!&ldquo; 🍸
-                        </p>
-                    </div>
-                </div>
-            </section>
+            {/* ─── CHECK24 Category Comparisons ─────────────────────────── */}
+            <Check24CategoryCards />
 
             {/* ─── GOLD QUERBALKEN II ──────────────────────────────────── */}
             <div className="relative overflow-hidden">

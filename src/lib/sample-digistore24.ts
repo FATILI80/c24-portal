@@ -8,8 +8,8 @@
 import type { Digistore24Product } from "@/types/affiliate"
 
 // ─── Affiliate-Konfiguration ──────────────────────────────────────────────
-// TODO: Durch echte Digistore24 Affiliate-ID ersetzen
-const DIGISTORE_AFFILIATE_ID = "budgetscout"
+const DIGISTORE_AFFILIATE_ID =
+    process.env.NEXT_PUBLIC_DIGISTORE24_AFFILIATE_ID || "DMf9CXkoXJdWVMs21LPJ"
 const DIGISTORE_BASE = "https://www.digistore24.com/redir"
 
 function digistoreUrl(productId: string): string {
