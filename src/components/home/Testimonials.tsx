@@ -7,21 +7,21 @@ const TESTIMONIALS = [
         name: "Max M.",
         role: "Stromsparer aus München",
         avatar: "🦸",
-        text: "Ich habe einen Stromtarif gefunden, der günstiger ist als mein letzter Döner. Danke, BudgetScout!",
+        text: "Ich habe einen Stromtarif gefunden, der günstiger ist als mein letzter Döner. Danke, BudgetScout Lounge!",
         highlight: "237€ pro Jahr gespart",
     },
     {
         name: "Lisa K.",
         role: "Kreditkarten-Kennerin aus Hamburg",
         avatar: "🦊",
-        text: "Endlich eine Vergleichsseite, die nicht so staubtrocken ist wie mein Toast von gestern.",
+        text: "Endlich eine Vergleichsseite, die nicht so staubtrocken ist wie mein Toast von gestern. Lounge-Feeling pur!",
         highlight: "85€ Gebühren gespart",
     },
     {
         name: "Tom W.",
         role: "Tagesgeld-Fan aus Berlin",
         avatar: "🐧",
-        text: "3,5% Zinsen? Mein Erspartes macht jetzt Urlaub auf den Bahamas. Na ja, zumindest zinsmäßig.",
+        text: "3,5% Zinsen? Mein Erspartes macht jetzt Urlaub auf den Bahamas. Lounge-Modus an!",
         highlight: "350€ mehr Zinsen",
     },
     {
@@ -37,15 +37,20 @@ export default function Testimonials() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
     return (
-        <section className="bg-zinc-50 py-16 dark:bg-zinc-900/50">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden bg-gradient-to-b from-zinc-50 to-white py-16 dark:from-zinc-900 dark:to-zinc-950">
+            {/* Warm accent */}
+            <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
+
+            <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="text-center">
-                    <span className="text-4xl">😂</span>
-                    <h2 className="mt-3 text-2xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1 text-sm font-medium text-amber-700 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-400">
+                        😂 Lounge-Stammgäste
+                    </span>
+                    <h2 className="mt-4 text-2xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-3xl">
                         Das sagen unsere Sparfüchse
                     </h2>
                     <p className="mt-2 text-zinc-600 dark:text-zinc-400">
-                        Echte Menschen. Echte Ersparnisse. Echt lustig.
+                        Echte Menschen. Echte Ersparnisse. Lounge-geprüft. 🥂
                     </p>
                 </div>
 
@@ -69,8 +74,8 @@ export default function Testimonials() {
                                 &ldquo;{t.text}&rdquo;
                             </p>
 
-                            {/* Highlight Badge */}
-                            <div className="mt-4 inline-block rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+                            {/* Highlight Badge - warm amber */}
+                            <div className="mt-4 inline-block rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
                                 🎉 {t.highlight}
                             </div>
 
@@ -84,7 +89,7 @@ export default function Testimonials() {
 
                             {/* Click hint */}
                             <span className="absolute right-3 top-3 text-xs text-zinc-300 opacity-0 transition-opacity group-hover:opacity-100 dark:text-zinc-700">
-                                ✨
+                                🥂
                             </span>
                         </div>
                     ))}
@@ -93,4 +98,3 @@ export default function Testimonials() {
         </section>
     )
 }
-

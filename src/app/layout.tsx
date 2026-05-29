@@ -98,30 +98,30 @@ export default function RootLayout({
           Zum Hauptinhalt springen
         </a>
 
-        {/* Header placeholder — will be replaced with Header.tsx component */}
-        <header className="sticky top-0 z-40 w-full border-b border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:border-zinc-800 dark:bg-zinc-950/95">
+        {/* ─── Header - BudgetScout Lounge ─────────────────────────────── */}
+        <header className="sticky top-0 z-40 w-full border-b border-amber-900/20 bg-zinc-950/95 backdrop-blur supports-[backdrop-filter]:bg-zinc-950/80 dark:border-amber-800/20">
           <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-            <a href="/" className="flex items-center gap-2 text-xl font-bold tracking-tight">
-              <span className="text-blue-600">Budget</span>
-              <span className="text-zinc-600 dark:text-zinc-400">Scout</span>
-              <span className="ml-2 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-300">
-                CHECK24
+            <a href="/" className="group flex items-center gap-2 text-xl font-bold tracking-tight">
+              <span className="text-amber-400 transition-colors group-hover:text-amber-300">Budget</span>
+              <span className="text-zinc-300 transition-colors group-hover:text-zinc-100">Scout</span>
+              <span className="ml-2 rounded-full border border-amber-700/40 bg-amber-950/50 px-2 py-0.5 text-xs font-medium text-amber-400">
+                Lounge 🥂
               </span>
             </a>
             <div className="hidden md:flex md:items-center md:gap-6">
-              <a href="/kategorien/finanzen" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50">
+              <a href="/kategorien/finanzen" className="text-sm font-medium text-zinc-400 transition-colors hover:text-amber-400">
                 Finanzen
               </a>
-              <a href="/kategorien/energie" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50">
+              <a href="/kategorien/energie" className="text-sm font-medium text-zinc-400 transition-colors hover:text-amber-400">
                 Energie
               </a>
-              <a href="/kategorien/telecom" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50">
+              <a href="/kategorien/telecom" className="text-sm font-medium text-zinc-400 transition-colors hover:text-amber-400">
                 Telecom
               </a>
-              <a href="/blog" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50">
+              <a href="/blog" className="text-sm font-medium text-zinc-400 transition-colors hover:text-amber-400">
                 Blog
               </a>
-              <a href="/deals" className="text-sm font-medium text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300">
+              <a href="/deals" className="inline-flex items-center gap-1.5 rounded-lg border border-amber-700/40 bg-amber-950/30 px-3 py-1.5 text-sm font-medium text-amber-400 transition-all hover:bg-amber-950/60 hover:text-amber-300">
                 🔥 Deals
               </a>
             </div>
@@ -133,59 +133,69 @@ export default function RootLayout({
           {children}
         </main>
 
-        {/* Footer */}
-        <footer className="border-t border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
+        {/* ─── Footer - BudgetScout Lounge ─────────────────────────────── */}
+        <footer className="border-t border-amber-900/10 bg-zinc-950">
           <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
               <div>
-                <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                  Kategorien
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-amber-400">
+                  🗂️ Kategorien
                 </h3>
                 <ul className="mt-4 space-y-2">
-                  <li><a href="/kategorien/finanzen" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Finanzen</a></li>
-                  <li><a href="/kategorien/energie" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Energie</a></li>
-                  <li><a href="/kategorien/versicherungen" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Versicherungen</a></li>
-                  <li><a href="/kategorien/telecom" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Telecom</a></li>
-                  <li><a href="/kategorien/reisen" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Reisen</a></li>
+                  <li><a href="/kategorien/finanzen" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Finanzen</a></li>
+                  <li><a href="/kategorien/energie" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Energie</a></li>
+                  <li><a href="/kategorien/versicherungen" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Versicherungen</a></li>
+                  <li><a href="/kategorien/telecom" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Telecom</a></li>
+                  <li><a href="/kategorien/reisen" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Reisen</a></li>
                 </ul>
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                  Blog
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-amber-400">
+                  📖 Blog
                 </h3>
                 <ul className="mt-4 space-y-2">
-                  <li><a href="/blog" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Alle Artikel</a></li>
-                  <li><a href="/blog/kreditkarten-vergleich-2026" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Kreditkarten-Vergleich 2026</a></li>
-                  <li><a href="/blog/stromtarif-vergleich-2026" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Stromtarif-Vergleich 2026</a></li>
-                  <li><a href="/blog/tagesgeld-top-zinsen-2026" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Tagesgeld Top-Zinsen 2026</a></li>
+                  <li><a href="/blog" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Alle Artikel</a></li>
+                  <li><a href="/blog/kreditkarten-vergleich-2026" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Kreditkarten-Vergleich 2026</a></li>
+                  <li><a href="/blog/stromtarif-vergleich-2026" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Stromtarif-Vergleich 2026</a></li>
+                  <li><a href="/blog/tagesgeld-top-zinsen-2026" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Tagesgeld Top-Zinsen 2026</a></li>
                 </ul>
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                  Rechtliches
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-amber-400">
+                  ⚖️ Rechtliches
                 </h3>
                 <ul className="mt-4 space-y-2">
-                  <li><a href="/impressum" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Impressum</a></li>
-                  <li><a href="/datenschutz" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Datenschutz</a></li>
+                  <li><a href="/impressum" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Impressum</a></li>
+                  <li><a href="/datenschutz" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Datenschutz</a></li>
                 </ul>
               </div>
               <div>
-                <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                  Über uns
+                <h3 className="flex items-center gap-2 text-sm font-semibold text-amber-400">
+                  🐷 Über uns
                 </h3>
                 <ul className="mt-4 space-y-2">
-                  <li><a href="/ueber-uns" className="text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400">Über dieses Portal</a></li>
+                  <li><a href="/ueber-uns" className="text-sm text-zinc-500 transition-colors hover:text-amber-400">Über dieses Portal</a></li>
+                  <li className="mt-3">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-950/50 px-3 py-1 text-xs text-amber-500">
+                      🥂 Lounge-Mitglied
+                    </span>
+                  </li>
                 </ul>
               </div>
             </div>
             {/* Affiliate Disclosure in Footer */}
-            <div className="mt-8 border-t border-zinc-200 pt-8 dark:border-zinc-800">
-              <p className="text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+            <div className="mt-8 border-t border-amber-900/10 pt-8">
+              <p className="text-xs leading-relaxed text-zinc-600">
                 {AFFILIATE_DISCLOSURE_TEXT}
               </p>
-              <p className="mt-4 text-xs text-zinc-400 dark:text-zinc-500">
-                &copy; {SEO_CONFIG.currentYear} BudgetScout.de – CHECK24 Partner. Alle Rechte vorbehalten.
-              </p>
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
+                <p className="text-xs text-zinc-600">
+                  &copy; {SEO_CONFIG.currentYear} BudgetScout.de – Deine Spar-Lounge 🥂
+                </p>
+                <p className="text-xs text-zinc-700">
+                  Mit ❤️ und 🐷 gemacht
+                </p>
+              </div>
             </div>
           </div>
         </footer>

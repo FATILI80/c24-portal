@@ -63,37 +63,51 @@ export default function Sparometer() {
     const formattedCount = count.toLocaleString("de-DE")
 
     return (
-        <section ref={sectionRef} className="bg-gradient-to-br from-emerald-600 to-teal-700 py-16 text-white">
-            <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-                <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-emerald-200">
+        <section ref={sectionRef} className="relative overflow-hidden bg-zinc-950 py-16 text-white">
+            {/* Warm gradient overlay */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.06),transparent_60%)]" />
+
+            {/* Gold shimmer borders */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+
+            {/* Floating warm emojis */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                <span className="absolute left-[8%] top-[20%] animate-float-gentle text-xl opacity-20">💰</span>
+                <span className="absolute right-[12%] top-[15%] animate-float-gentle text-2xl opacity-20" style={{ animationDelay: "1s" }}>🥂</span>
+                <span className="absolute left-[20%] bottom-[20%] animate-float-gentle text-xl opacity-20" style={{ animationDelay: "2s" }}>🐷</span>
+            </div>
+
+            <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
+                <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-amber-800/30 bg-amber-950/30 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-400">
                     📊 BudgetScout Sparometer
                 </div>
 
                 <div className="relative">
                     {/* Big number */}
                     <div className="text-6xl font-black tracking-tight sm:text-7xl md:text-8xl">
-                        <span className="inline-block tabular-nums">
+                        <span className="inline-block bg-gradient-to-r from-amber-300 via-yellow-300 to-amber-400 bg-clip-text text-transparent tabular-nums">
                             {formattedCount}
                         </span>
-                        <span className="ml-2 text-4xl sm:text-5xl">€</span>
+                        <span className="ml-2 text-4xl text-amber-400/80 sm:text-5xl">€</span>
                     </div>
 
-                    <p className="mt-4 text-lg text-emerald-100">
-                        Bisher von unseren Nutzern gespart 💰
+                    <p className="mt-4 text-lg text-zinc-400">
+                        Bisher von unseren Lounge-Gästen gespart 💰
                     </p>
 
                     <button
                         onClick={handleReSnap}
-                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-white/20 px-6 py-2 text-sm font-medium text-white backdrop-blur-sm transition-all hover:bg-white/30 active:scale-95"
+                        className="mt-6 inline-flex items-center gap-2 rounded-full border border-amber-700/30 bg-amber-950/30 px-6 py-2 text-sm font-medium text-amber-400 backdrop-blur-sm transition-all hover:bg-amber-950/50 hover:text-amber-300 active:scale-95"
                     >
-                        🔄 Nochmal zählen lassen
+                        🍸 Nochmal zählen lassen
                     </button>
                 </div>
 
                 {/* Mini ticker bar */}
-                <div className="mx-auto mt-8 h-3 w-full max-w-md overflow-hidden rounded-full bg-white/20">
+                <div className="mx-auto mt-8 h-3 w-full max-w-md overflow-hidden rounded-full bg-zinc-800">
                     <div
-                        className="h-full rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 transition-all duration-1000"
+                        className="h-full rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-1000"
                         style={{
                             width: `${Math.min((count / TARGET_AMOUNT) * 100, 100)}%`,
                         }}
@@ -103,4 +117,3 @@ export default function Sparometer() {
         </section>
     )
 }
-
