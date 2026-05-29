@@ -4,6 +4,7 @@ import { SEO_CONFIG } from "@/lib/seo"
 
 /**
  * Generate a dynamic XML sitemap for all pages.
+ * Includes static pages, categories, blog posts, deals, and ratgeber pages.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = SEO_CONFIG.baseUrl
@@ -24,6 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.8,
         },
         {
+            url: `${baseUrl}/deals`,
+            lastModified: today,
+            changeFrequency: "weekly",
+            priority: 0.7,
+        },
+        {
             url: `${baseUrl}/impressum`,
             lastModified: today,
             changeFrequency: "monthly",
@@ -34,6 +41,67 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: today,
             changeFrequency: "monthly",
             priority: 0.2,
+        },
+        {
+            url: `${baseUrl}/affiliate-hinweis`,
+            lastModified: today,
+            changeFrequency: "monthly",
+            priority: 0.2,
+        },
+        {
+            url: `${baseUrl}/kontakt`,
+            lastModified: today,
+            changeFrequency: "monthly",
+            priority: 0.3,
+        },
+        {
+            url: `${baseUrl}/ueber-uns`,
+            lastModified: today,
+            changeFrequency: "monthly",
+            priority: 0.3,
+        },
+        {
+            url: `${baseUrl}/mediadaten`,
+            lastModified: today,
+            changeFrequency: "monthly",
+            priority: 0.4,
+        },
+        // Ratgeber landing pages
+        {
+            url: `${baseUrl}/ratgeber/kfz-versicherung-wechseln`,
+            lastModified: today,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/ratgeber/stromanbieter-vergleich`,
+            lastModified: today,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/ratgeber/online-geld-verdienen`,
+            lastModified: today,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/ratgeber/kreditkarten-vergleich`,
+            lastModified: today,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/ratgeber/tagesgeld-vergleich`,
+            lastModified: today,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/ratgeber/dsl-wechseln`,
+            lastModified: today,
+            changeFrequency: "weekly",
+            priority: 0.8,
         },
     ]
 
@@ -47,6 +115,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
         })
     )
 
+    // Deal category pages
+    const dealCategoryPages: MetadataRoute.Sitemap = [
+        "ebooks",
+        "gesundheit",
+        "finanzen",
+        "vorsorge",
+        "online-business",
+        "haushalt",
+        "mindset",
+    ].map((cat) => ({
+        url: `${baseUrl}/deals/${cat}`,
+        lastModified: today,
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+    }))
+
     // Blog post pages
     const blogPages: MetadataRoute.Sitemap = getAllBlogPosts().map(
         (post) => ({
@@ -57,6 +141,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
         })
     )
 
-    return [...staticPages, ...categoryPages, ...blogPages]
+    return [
+        ...staticPages,
+        ...categoryPages,
+        ...dealCategoryPages,
+        ...blogPages,
+    ]
 }
-

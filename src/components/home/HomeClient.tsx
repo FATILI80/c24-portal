@@ -1,437 +1,664 @@
 "use client"
 
-import { getAllCategories } from "@/lib/content-loader"
-import { SEO_CONFIG } from "@/lib/seo"
-import { useConfetti } from "./Confetti"
-import ConfettiOverlay from "./Confetti"
-import FunFacts from "./FunFacts"
-import Sparometer from "./Sparometer"
-import Testimonials from "./Testimonials"
-import GamificationBadges from "./GamificationBadges"
-import Mascot from "./Mascot"
-import TechDeals from "@/components/affiliate/TechDeals"
-import DigistoreDeals from "@/components/affiliate/DigistoreDeals"
-import Check24CategoryCards from "@/components/home/Check24CategoryCards"
+import { useState } from "react"
+import { generateAffiliateLink, getAffiliateLinkAttributes } from "@/lib/affiliate-links"
+import type { Slug } from "@/types/affiliate"
+import DealTicker from "@/components/conversion/DealTicker"
+import ShareButtons from "@/components/conversion/ShareButtons"
+import { trackProductView } from "@/components/conversion/RecentlyViewed"
+import RecentlyViewed from "@/components/conversion/RecentlyViewed"
+import Testimonials from "@/components/home/Testimonials"
+import NewsletterSignup from "@/components/conversion/NewsletterSignup"
+import StickyCta from "@/components/conversion/StickyCta"
+import ExitIntentPopup from "@/components/conversion/ExitIntentPopup"
 
-// ─── Lounge-Style Category Sayings ─────────────────────────────────────
-const CATEGORY_CLAIMS: Record<string, string> = {
-    "strom-gas": "Kalt erwischt? Hier wird's heiß! 🔥",
-    kreditkarten: "Zahlen? Sparen! Easy wie 'nen Cocktail schlürfen 🍸",
-    tagesgeld: "Mehr Zinsen als Dein Konto tragen kann! 🌱",
-    "kfz-versicherung": "Versicherung wechseln – Geldbeutel sagt Danke! 🚗✨",
-    dsl: "Schneller als die Bedienung an der Bar! ⚡",
-    mietwagen: "Fahren wie ein Boss – zahlen wie ein Azubi! 👑",
-    reisen: "Urlaub buchen, Kasse schonen. Prost! ✈️🥂",
+// ─── CHECK24 Category Config ──────────────────────────────────────────────
+interface Check24Category {
+    slug: Slug
+    name: string
+    description: string
+    icon: string
+    savings: string
 }
 
-// ─── Lounge Mood Sayings ────────────────────────────────────────────────
-const LOUNGE_SPRUECHE = [
-    "Willkommen in der gemütlichsten Ecke des Internets 🥂",
-    "Lehn Dich zurück – Sparen war noch nie so entspannt 🛋️",
-    "Hier schlürfst Du Cocktails, während Dein Geld arbeitet 🍸",
-    "Vergleiche bei Kerzenschein – romantisch und günstig 🕯️",
-    "Dein Geldbeutel verdient 'ne Auszeit – Lounge-Modus an! 🎵",
-    "Chillen, Vergleichen, Sparen – in genau dieser Reihenfolge 😎",
-    "Willkommen im VIP-Bereich des Sparens 🎫",
-    "Setz Dich, schnapp Dir 'nen Drink und vergleich' Tarife 🍹",
+const CHECK24_CATEGORIES: Check24Category[] = [
+    {
+        slug: "kfz-versicherung",
+        name: "Kfz-Versicherung",
+        description: "Haftpflicht, Teil- oder Vollkasko – bis zu 500€ sparen durch einen Wechsel.",
+        icon: "🚗",
+        savings: "Bis zu 500€ sparen",
+    },
+    {
+        slug: "strom-gas",
+        name: "Stromanbieter",
+        description: "Finde den günstigsten Stromtarif für Deine PLZ. Wechsel in wenigen Minuten.",
+        icon: "⚡",
+        savings: "Bis zu 300€ sparen",
+    },
+    {
+        slug: "dsl",
+        name: "DSL & Internet",
+        description: "Surfgeschwindigkeiten vergleichen – vom günstigen Einsteiger- bis zum Highspeed-Tarif.",
+        icon: "🌐",
+        savings: "Bis zu 240€ sparen",
+    },
+    {
+        slug: "kredite",
+        name: "Kredite",
+        description: "Ratenkredite, Autokredite oder Umschuldung – den besten Zins sichern.",
+        icon: "💰",
+        savings: "Bis zu 1.000€ Zinsen sparen",
+    },
+    {
+        slug: "krankenversicherung",
+        name: "Krankenversicherung",
+        description: "Gesetzlich oder privat? Vergleich lohnt sich – vor allem für Selbstständige.",
+        icon: "🛡️",
+        savings: "Bis zu 800€ sparen",
+    },
+    {
+        slug: "mietwagen",
+        name: "Mietwagen",
+        description: "Mietwagen weltweit vergleichen – günstige Preise von Sixt, Europcar, Hertz und vielen mehr.",
+        icon: "🚙",
+        savings: "Ab 15€ pro Tag",
+    },
+    {
+        slug: "reisen",
+        name: "Reisen & Flüge",
+        description: "Hotels, Flüge und Pauschalreisen vergleichen. Die besten Angebote für Deinen Urlaub.",
+        icon: "✈️",
+        savings: "Urlaub günstig buchen",
+    },
 ]
 
-const LOUNGE_EMOJIS = ["🥂", "🍸", "🛋️", "✨", "💫", "🌟", "🎵", "🎶", "🍹", "🧊"]
+// ─── Digistore24 Product Config (15 echte Produkte) ──────────────────────
 
-export default function HomeClient({
-    categories,
-}: {
-    categories: ReturnType<typeof getAllCategories>
-}) {
-    const { particles, fire } = useConfetti()
+interface DigistoreProduct {
+    name: string
+    description: string
+    category: string
+    filterGroup: string
+    link: string
+}
+
+const DIGISTORE_PRODUCTS: DigistoreProduct[] = [
+    {
+        name: "Mehr Energie im Alltag",
+        description: "Natürliche Methoden für mehr Vitalität – ohne teure Arztbesuche.",
+        category: "Gesundheit",
+        filterGroup: "Gesundheit",
+        link: "https://www.digistore24.com/redir/659362/Bb8ozi/",
+    },
+    {
+        name: "Gesund & unabhängig leben",
+        description: "Praktisches Haushalts-Wissen das bares Geld spart.",
+        category: "Gesundheit & Haushalt",
+        filterGroup: "Gesundheit",
+        link: "https://www.digistore24.com/redir/659614/Bb8ozi/",
+    },
+    {
+        name: "Heilpflanzen selbst anbauen",
+        description: "Medizinische Pflanzen zuhause ziehen – unabhängig von Apotheke & Drogerie.",
+        category: "Gesundheit & Vorsorge",
+        filterGroup: "Gesundheit",
+        link: "https://medicinalseedkit.com/kit/#aff=Bb8ozi",
+    },
+    {
+        name: "Krisenvorsorge: Lebensmittel clever lagern",
+        description: "Wie du dich mit einem kleinen Budget optimal für Engpässe absicherst.",
+        category: "Vorsorge & Sparen",
+        filterGroup: "Vorsorge & Sicherheit",
+        link: "https://ultimatesurvivalfoods.com/book/#aff=Bb8ozi",
+    },
+    {
+        name: "Der Haus-Doktor: Selbst behandeln & sparen",
+        description: "Das Handbuch für medizinische Erstversorgung zuhause – weniger Arztkosten.",
+        category: "Gesundheit & Haushalt",
+        filterGroup: "Gesundheit",
+        link: "https://homedoctorbook.com/book/#aff=Bb8ozi",
+    },
+    {
+        name: "Zuhause sicher & geschützt",
+        description: "Günstige Maßnahmen die dein Zuhause vor Einbruch schützen.",
+        category: "Sicherheit & Vorsorge",
+        filterGroup: "Vorsorge & Sicherheit",
+        link: "https://www.theantilooterkit.com/main/#aff=Bb8ozi",
+    },
+    {
+        name: "Besser schlafen – weniger Kosten",
+        description: "Erholsamer Schlaf ohne teure Hilfsmittel oder Schlafmittel.",
+        category: "Gesundheit",
+        filterGroup: "Gesundheit",
+        link: "https://neowake.de/source-code/#aff=Bb8ozi",
+    },
+    {
+        name: "Sauberes Wasser – Kosten senken",
+        description: "Trinkwasser selbst aufbereiten – unabhängig und günstiger als Flaschen.",
+        category: "Haushalt & Sparen",
+        filterGroup: "Haushalt & Sparen",
+        link: "https://uswaterrevolution.com/#aff=Bb8ozi",
+    },
+    {
+        name: "Vitalität steigern – natürlich",
+        description: "Für alle die in ihre Gesundheit investieren statt ins Gesundheitssystem.",
+        category: "Gesundheit & Vorsorge",
+        filterGroup: "Gesundheit",
+        link: "https://myvigorsana.com/vigorsana-pdp-fe#aff=Bb8ozi",
+    },
+    {
+        name: "Finanziell freier werden",
+        description: "Schritt-für-Schritt zur finanziellen Unabhängigkeit – auch mit kleinem Budget.",
+        category: "Finanzen",
+        filterGroup: "Finanzen",
+        link: "https://www.digistore24.com/redir/434104/Bb8ozi/",
+    },
+    {
+        name: "Nebeneinkommen mit Social Media",
+        description: "Wie du mit Instagram ein zweites Standbein aufbaust – Schritt für Schritt.",
+        category: "Online Business",
+        filterGroup: "Online Business",
+        link: "https://franke-akademie.de/met-gluecksformel-instagram#aff=Bb8ozi",
+    },
+    {
+        name: "Mental stark & fokussiert",
+        description: "Mentale Stärke aufbauen – für bessere Entscheidungen beim Geld und im Alltag.",
+        category: "Mindset & Finanzen",
+        filterGroup: "Mindset",
+        link: "https://silent-subliminals.de#aff=Bb8ozi",
+    },
+    {
+        name: "Passives Einkommen starten",
+        description: "Einnahmen aufbauen die auch dann fließen wenn du schläfst.",
+        category: "Online Business",
+        filterGroup: "Online Business",
+        link: "https://www.digistore24.com/redir/615173/Bb8ozi/",
+    },
+    {
+        name: "Website-Besucher in Kunden verwandeln",
+        description: "Tool für mehr Conversions – ideal für alle die online verkaufen.",
+        category: "Online Business & Tools",
+        filterGroup: "Online Business",
+        link: "https://www.engagegorilla.com/?utm_source=affiliate&utm_medium=Bb8ozi#aff=Bb8ozi",
+    },
+    {
+        name: "Smarter sparen im Alltag",
+        description: "Praktische Strategien die sofort mehr Geld im Portemonnaie lassen.",
+        category: "Sparen & Finanzen",
+        filterGroup: "Finanzen",
+        link: "https://www.checkout-ds24.com/redir/678181/Bb8ozi/",
+    },
+]
+
+// ─── Category Filter Config ──────────────────────────────────────────────
+
+const FILTER_CATEGORIES = [
+    "Alle",
+    "Gesundheit",
+    "Finanzen",
+    "Vorsorge & Sicherheit",
+    "Online Business",
+    "Haushalt & Sparen",
+    "Mindset",
+] as const
+
+type FilterCategory = (typeof FILTER_CATEGORIES)[number]
+
+// ─── Vertrauens-Bereich Config ───────────────────────────────────────────
+
+interface TrustItem {
+    icon: string
+    title: string
+    description: string
+}
+
+const TRUST_ITEMS: TrustItem[] = [
+    {
+        icon: "🔍",
+        title: "Unabhängig verglichen",
+        description: "Alle Vergleiche sind redaktionell unabhängig. Wir erhalten eine Provision, aber das beeinflusst unsere Rankings nicht.",
+    },
+    {
+        icon: "📅",
+        title: "Täglich aktualisiert",
+        description: "Tarife und Preise ändern sich ständig. Wir aktualisieren unsere Daten täglich, damit Du immer den besten Deal bekommst.",
+    },
+    {
+        icon: "✅",
+        title: "Kostenlos & unverbindlich",
+        description: "Alle Vergleiche sind für Dich völlig kostenlos. Keine versteckten Kosten, keine Anmeldung erforderlich.",
+    },
+]
+
+// ─── Ratgeber-Vorschau Config ────────────────────────────────────────────
+
+interface RatgeberPreview {
+    title: string
+    excerpt: string
+    slug: string
+    icon: string
+}
+
+const RATGEBER_ARTICLES: RatgeberPreview[] = [
+    {
+        title: "Kfz-Versicherung wechseln – so geht's",
+        excerpt: "Wann lohnt sich ein Wechsel der Kfz-Versicherung? Wir erklären die Fristen, Stufen und worauf Du achten musst, um bares Geld zu sparen.",
+        slug: "kfz-versicherung-wechseln",
+        icon: "🚗",
+    },
+    {
+        title: "Stromanbieter vergleichen & wechseln",
+        excerpt: "Der Strommarkt ist im Wandel. Erfahre, wie Du mit einem Anbieterwechsel hunderte Euro sparst und worauf es beim Tarifvergleich ankommt.",
+        slug: "stromanbieter-vergleich",
+        icon: "⚡",
+    },
+    {
+        title: "Online Geld verdienen – seriöse Wege",
+        excerpt: "Nebenjob oder Hauptverdienst? Wir zeigen Dir seriöse Möglichkeiten, online Geld zu verdienen – von Affiliate-Marketing bis zum eigenen Online-Kurs.",
+        slug: "online-geld-verdienen",
+        icon: "💡",
+    },
+]
+
+// ─── Helper ──────────────────────────────────────────────────────────────
+
+const linkAttrs = getAffiliateLinkAttributes()
+
+function buildCheck24Url(slug: Slug, subid: string): string {
+    const { url } = generateAffiliateLink({
+        categorySlug: slug,
+        subid,
+    })
+    return url
+}
+
+// ─── Holzquerbalken Component ───────────────────────────────────────────
+
+function HolzBalken({ dark = false }: { dark?: boolean }) {
+    return <div className={dark ? "holz-balken-dark" : "holz-balken"} />
+}
+
+// ─── Component ──────────────────────────────────────────────────────────
+
+export default function HomeClient() {
+    const [activeFilter, setActiveFilter] = useState<FilterCategory>("Alle")
+
+    const filteredProducts =
+        activeFilter === "Alle"
+            ? DIGISTORE_PRODUCTS
+            : DIGISTORE_PRODUCTS.filter((p) => p.filterGroup === activeFilter)
+
+    const handleProductClick = (product: DigistoreProduct) => {
+        trackProductView(product.name, product.link, product.category)
+    }
 
     return (
         <div className="flex flex-col">
-            {/* ─── Confetti Overlay ───────────────────────────────────── */}
-            <ConfettiOverlay particles={particles} />
+            {/* ══════════════════════════════════════════════════════════════════
+            DEAL TICKER
+            ══════════════════════════════════════════════════════════════════ */}
+            <DealTicker />
 
-            {/* ─── Hero - BudgetScout Lounge ─────────────────────────────── */}
-            <section className="relative overflow-hidden bg-gradient-to-br from-surface via-gold-dark to-surface text-text-primary">
-                {/* Warm gold lounge glow effect */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,197,24,0.08),transparent_60%)]" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(245,197,24,0.05),transparent_50%)]" />
-
-                {/* Floating lounge decorations */}
-                <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                    <span className="absolute left-[5%] top-[15%] animate-float-gentle text-2xl opacity-20">🥂</span>
-                    <span className="absolute right-[8%] top-[25%] animate-float-gentle text-3xl opacity-20" style={{ animationDelay: "0.8s" }}>🍸</span>
-                    <span className="absolute left-[15%] bottom-[30%] animate-float-gentle text-2xl opacity-20" style={{ animationDelay: "1.6s" }}>✨</span>
-                    <span className="absolute right-[20%] bottom-[20%] animate-float-gentle text-3xl opacity-20" style={{ animationDelay: "2.4s" }}>🎵</span>
-                    <span className="absolute left-[45%] top-[60%] animate-float-gentle text-xl opacity-20" style={{ animationDelay: "3.2s" }}>🛋️</span>
-                </div>
-
-                {/* Animated gold shimmer line */}
-                <div className="absolute top-0 left-0 right-0 h-px animate-shimmer-gold" />
+            {/* ══════════════════════════════════════════════════════════════════
+            HERO SECTION
+            ══════════════════════════════════════════════════════════════════ */}
+            <section className="relative overflow-hidden bg-surface">
+                {/* Subtle wood texture in hero background */}
+                <div className="absolute inset-0 bg-holz-texture" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(245,197,24,0.06),transparent_60%)]" />
 
                 <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-36">
                     <div className="max-w-3xl">
-                        {/* Lounge tagline badge */}
-                        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold-primary/40 bg-gold-dark/40 px-4 py-1.5 text-sm font-medium text-gold-primary backdrop-blur-sm">
-                            <span className="animate-pulse-soft">🥂</span>
-                            <span>BudgetScout Lounge · Seit {SEO_CONFIG.currentYear}</span>
+                        {/* Badge */}
+                        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-holz-dark/50 px-4 py-1.5 text-sm font-medium text-gold-primary backdrop-blur-sm">
+                            <span>🏆</span>
+                            <span>Unabhängiges Vergleichsportal</span>
                         </div>
 
-                        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                            Vergleichen, Sparen,{" "}
-                            <span className="bg-gradient-to-r from-gold-primary via-yellow-300 to-gold-primary bg-clip-text text-transparent">
-                                Lounge genießen
-                            </span>
+                        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                            Vergleichen & Sparen{" "}
+                            <span className="text-gold-primary">mit einem Klick</span>
                         </h1>
+
                         <p className="mt-6 text-lg leading-8 text-zinc-400 sm:text-xl">
-                            Kreditkarten, Strom, DSL & mehr – lehn Dich zurück, wir finden den besten Tarif für Dich.
-                            <span className="block mt-2 text-gold-primary/80 text-base italic">
-                                &bdquo;Sparen war noch nie so entspannt wie ein Feierabend-Cocktail.&ldquo; 🍸
+                            Vergleiche Kfz-Versicherung, Stromtarife, DSL, Kredite und
+                            Krankenversicherung. Wir finden den besten Tarif für Dich –
+                            <span className="text-gold-primary font-medium">
+                                {" "}garantiert kostenlos & unverbindlich.
                             </span>
                         </p>
+
                         <div className="mt-8 flex flex-wrap gap-4">
-                            <button
-                                onClick={() => {
-                                    fire(50, 80)
-                                    document
-                                        .getElementById("kategorien")
-                                        ?.scrollIntoView({ behavior: "smooth" })
-                                }}
-                                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-gold-primary to-yellow-500 px-6 py-3 text-base font-semibold text-gold-dark shadow-lg shadow-gold-primary/25 transition-all hover:from-gold-primary/90 hover:to-yellow-400 hover:scale-105 hover:shadow-xl hover:shadow-gold-primary/30 active:scale-95"
-                            >
-                                Kategorien entdecken 🎯
-                            </button>
-                            <a
-                                href="/deals"
-                                className="inline-flex items-center gap-2 rounded-xl border border-gold-primary/40 px-6 py-3 text-base font-semibold text-gold-primary transition-all hover:bg-gold-dark/50 hover:border-gold-primary/60 hover:scale-105 active:scale-95"
-                            >
-                                🔥 Deals stöbern
+                            <a href="#check24-vergleiche" className="btn-gold text-base">
+                                Jetzt vergleichen
                             </a>
-                            <a
-                                href="/blog"
-                                className="inline-flex items-center gap-2 rounded-xl border border-zinc-700/40 px-6 py-3 text-base font-medium text-zinc-400 transition-all hover:border-zinc-500/40 hover:text-zinc-200 hover:scale-105 active:scale-95"
-                            >
-                                📖 Blog lesen
+                            <a href="#digistore-deals" className="btn-outline text-base">
+                                Top Deals entdecken
                             </a>
+                        </div>
+
+                        {/* Trust bar under hero */}
+                        <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-zinc-500">
+                            <span className="flex items-center gap-1.5">
+                                <span className="text-gold-primary">✓</span> 100% kostenlos
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                                <span className="text-gold-primary">✓</span> Unabhängig
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                                <span className="text-gold-primary">✓</span> Täglich aktuell
+                            </span>
+                        </div>
+
+                        {/* Share buttons */}
+                        <div className="mt-8">
+                            <ShareButtons />
                         </div>
                     </div>
                 </div>
-
-                {/* Bottom glow */}
-                <div className="absolute bottom-0 left-0 right-0 h-px animate-shimmer-gold" />
             </section>
 
-            {/* ─── Fun Facts ─────────────────────────────────────────────── */}
-            <FunFacts />
+            {/* ── Holzquerbalken ────────────────────────────────────────────── */}
+            <HolzBalken />
 
-            {/* ─── Sparometer ────────────────────────────────────────────── */}
-            <Sparometer />
-
-            {/* ─── GOLD QUERBALKEN I ───────────────────────────────────── */}
-            <div className="relative overflow-hidden">
-                <div className="h-px bg-gradient-to-r from-transparent via-gold-primary/50 to-transparent" />
-                <div className="relative bg-gradient-to-r from-surface via-gold-primary/5 to-surface py-6">
-                    <div className="mx-auto flex max-w-3xl items-center justify-center gap-4 px-4">
-                        <div className="h-px flex-1 bg-gradient-to-l from-gold-primary/30 to-transparent" />
-                        <span className="inline-flex items-center gap-2 text-sm font-medium text-gold-primary/80">
-                            🥂 Geld sparen ist wie 'n guter Lounge-Cocktail – die Mischung machts!
-                        </span>
-                        <div className="h-px flex-1 bg-gradient-to-r from-gold-primary/30 to-transparent" />
-                    </div>
-                </div>
-                <div className="h-px bg-gradient-to-r from-transparent via-gold-primary/30 to-transparent" />
-            </div>
-
-            {/* ─── WOW STATS SECTION ──────────────────────────────────────── */}
-            <section className="relative overflow-hidden bg-surface py-14">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,197,24,0.04),transparent_60%)]" />
-                <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-                    <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-                        {[
-                            { value: "274.839+", label: "Euro gespart", icon: "💰" },
-                            { value: "12.458", label: "Vergleiche durchgeführt", icon: "📊" },
-                            { value: "4.921", label: "Lounge-Gäste", icon: "🛋️" },
-                            { value: "1.847", label: "Badges verliehen", icon: "🏆" },
-                        ].map((stat, i) => (
-                            <div key={i} className="group rounded-xl border border-gold-accent bg-gold-dark/30 p-6 text-center transition-all duration-300 hover:border-gold-primary/50 hover:bg-gold-dark/60 shadow-gold-glow hover:shadow-gold-glow-lg">
-                                <span className="text-3xl transition-transform duration-300 group-hover:scale-125">{stat.icon}</span>
-                                <p className="mt-2 text-2xl font-black text-gold-primary tabular-nums">{stat.value}</p>
-                                <p className="mt-1 text-xs text-zinc-500">{stat.label}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* ─── Category Grid (Lounge Cards) ──────────────────────────── */}
-            <section id="kategorien" className="relative overflow-hidden bg-gradient-to-b from-surface via-gold-dark to-surface py-16 sm:py-24">
-                {/* Subtle pattern */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(245,197,24,0.03),transparent_70%)]" />
-
+            {/* ══════════════════════════════════════════════════════════════════
+            CHECK24 VERGLEICHE
+            ══════════════════════════════════════════════════════════════════ */}
+            <section
+                id="check24-vergleiche"
+                className="relative overflow-hidden bg-surface py-16 sm:py-24"
+            >
                 <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    {/* Section header */}
                     <div className="text-center">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-gold-dark/50 px-4 py-1 text-sm font-medium text-gold-primary">
-                            🛋️ Lounge-Menü
+                        <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-holz-dark/50 px-4 py-1 text-sm font-medium text-gold-primary">
+                            📊 CHECK24-Vergleiche
                         </span>
-                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-text-primary">
-                            Wähl' Dein Spar-Vergnügen
+                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                            Finde den besten Tarif
                         </h2>
                         <p className="mt-3 text-lg text-zinc-400">
-                            Such Dir aus, wo Du zuschlagen willst – der erste Drink (Vergleich) geht aufs Haus! 🥂
+                            Wähle eine Kategorie und vergleiche aktuell bis zu 50+ Tarife.
                         </p>
                     </div>
 
-                    <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {categories.map((category) => (
-                            <a
-                                key={category.id}
-                                href={`/kategorien/${category.id}`}
-                                onClick={() => fire(50, 50)}
-                                className="group relative overflow-hidden rounded-xl border border-gold-accent bg-gold-dark/40 p-6 shadow-sm transition-all duration-300 hover:border-gold-primary/60 hover:shadow-gold-glow-lg hover:-translate-y-2"
-                            >
-                                {/* Warm gold glow on hover */}
-                                <div className="absolute -inset-1 bg-gradient-to-r from-gold-primary to-yellow-500 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-10" />
-
-                                <div className="relative flex items-center gap-4">
-                                    <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-gold-dark to-gold-accent text-2xl shadow-sm transition-all duration-300 group-hover:scale-125 group-hover:-rotate-6">
-                                        {category.icon}
+                    {/* Category cards grid */}
+                    <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                        {CHECK24_CATEGORIES.map((cat) => {
+                            const href = buildCheck24Url(cat.slug, `homepage-${cat.slug}`)
+                            return (
+                                <a
+                                    key={cat.slug}
+                                    href={href}
+                                    {...linkAttrs}
+                                    className="card-base card-holz-border group flex flex-col items-center p-6 text-center"
+                                >
+                                    <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-holz-dark text-2xl transition-all duration-300 group-hover:scale-110">
+                                        {cat.icon}
                                     </span>
-                                    <div>
-                                        <h3 className="text-lg font-semibold text-text-primary">
-                                            {category.name}
-                                        </h3>
-                                        <p className="text-sm font-medium text-gold-primary">
-                                            {category.shortName}
-                                        </p>
-                                    </div>
-                                </div>
+                                    <h3 className="mt-4 text-base font-bold text-text-primary">
+                                        {cat.name}
+                                    </h3>
+                                    <p className="mt-2 text-xs leading-relaxed text-zinc-500">
+                                        {cat.description}
+                                    </p>
+                                    <span className="mt-3 inline-flex items-center gap-1 rounded-full bg-gold-primary/10 px-2.5 py-0.5 text-xs font-semibold text-gold-primary">
+                                        {cat.savings}
+                                    </span>
+                                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-gold-primary transition-all group-hover:gap-2">
+                                        Jetzt vergleichen
+                                        <span className="transition-transform group-hover:translate-x-0.5">→</span>
+                                    </span>
+                                </a>
+                            )
+                        })}
+                    </div>
+                </div>
+            </section>
 
-                                <p className="relative mt-4 text-sm leading-relaxed text-zinc-400">
-                                    {category.description}
+            {/* ── Holzquerbalken ────────────────────────────────────────────── */}
+            <HolzBalken dark />
+
+            {/* ══════════════════════════════════════════════════════════════════
+            DIGISTORE24 PRODUKTE
+            ══════════════════════════════════════════════════════════════════ */}
+            <section
+                id="digistore-deals"
+                className="relative overflow-hidden bg-surface py-16 sm:py-24"
+            >
+                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    {/* Section header */}
+                    <div className="text-center">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-holz-dark/50 px-4 py-1 text-sm font-medium text-gold-primary">
+                            🛒 Empfohlene Produkte
+                        </span>
+                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                            Deals, die sich lohnen
+                        </h2>
+                        <p className="mt-3 text-lg text-zinc-400">
+                            Hochwertige Kurse, E-Books und mehr – handverlesen für Dich.
+                        </p>
+                    </div>
+
+                    {/* ── Category Filter Tabs ──────────────────────────────────── */}
+                    <div className="mt-8 flex flex-wrap justify-center gap-2">
+                        {FILTER_CATEGORIES.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setActiveFilter(cat)}
+                                className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 ${activeFilter === cat
+                                    ? "bg-gold-primary text-surface"
+                                    : "bg-holz-dark/60 text-zinc-400 hover:bg-holz-dark hover:text-text-primary"
+                                    }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* ── Product Cards Grid ────────────────────────────────────── */}
+                    <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                        {filteredProducts.map((product, i) => (
+                            <a
+                                key={i}
+                                href={product.link}
+                                target="_blank"
+                                rel="noopener noreferrer nofollow"
+                                className="card-base card-holz-border group flex flex-col p-6"
+                                onClick={() => handleProductClick(product)}
+                            >
+                                {/* Category badge */}
+                                <span className="inline-flex self-start rounded-full bg-gold-primary/15 px-2.5 py-0.5 text-xs font-semibold text-gold-primary">
+                                    {product.category}
+                                </span>
+
+                                {/* Product name */}
+                                <h3 className="mt-3 text-base font-bold text-text-primary">
+                                    {product.name}
+                                </h3>
+
+                                {/* Description */}
+                                <p className="mt-2 text-sm leading-relaxed text-zinc-500 flex-1">
+                                    {product.description}
                                 </p>
 
-                                {/* Lounge claim */}
-                                <p className="relative mt-3 flex items-center gap-1.5 text-xs font-medium text-gold-primary">
-                                    <span>🍸</span>
-                                    <span>{CATEGORY_CLAIMS[category.id] ?? "Sparen Lounge-Style! 😎"}</span>
-                                </p>
+                                {/* CTA */}
+                                <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-gold-primary transition-all group-hover:gap-2">
+                                    Jetzt ansehen
+                                    <span className="transition-transform group-hover:translate-x-0.5">→</span>
+                                </span>
+                            </a>
+                        ))}
+                    </div>
 
-                                <div className="relative mt-4 flex items-center gap-2 text-sm font-medium text-gold-primary transition-all group-hover:gap-3">
-                                    <span>In die Lounge</span>
-                                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                                    <span className="text-lg opacity-0 transition-all group-hover:opacity-100">🥂</span>
-                                </div>
+                    {/* If filter yields no results */}
+                    {filteredProducts.length === 0 && (
+                        <p className="mt-8 text-center text-sm text-zinc-600">
+                            Keine Produkte in dieser Kategorie gefunden.
+                        </p>
+                    )}
+                </div>
+            </section>
+
+            {/* ── Holzquerbalken ────────────────────────────────────────────── */}
+            <HolzBalken />
+
+            {/* ══════════════════════════════════════════════════════════════════
+            RECENTLY VIEWED
+            ══════════════════════════════════════════════════════════════════ */}
+            <RecentlyViewed />
+
+            {/* ── Holzquerbalken (dark) ────────────────────────────────────── */}
+            <HolzBalken dark />
+
+            {/* ══════════════════════════════════════════════════════════════════
+            DEAL DES TAGES
+            ══════════════════════════════════════════════════════════════════ */}
+            <section className="relative overflow-hidden bg-surface py-16 sm:py-20">
+                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="card-base card-holz-border relative overflow-hidden border border-gold-primary/20 p-8 sm:p-12 animate-gold-pulse">
+                        {/* Wood texture overlay */}
+                        <div className="absolute inset-0 bg-holz-texture opacity-30" />
+                        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,197,24,0.04),transparent_60%)]" />
+
+                        <div className="relative">
+                            <span className="inline-flex items-center gap-1.5 rounded-full bg-gold-primary/15 px-3 py-1 text-xs font-bold text-gold-primary">
+                                <span className="animate-pulse-soft">🔥</span>
+                                DEAL DES TAGES
+                            </span>
+
+                            <h3 className="mt-4 text-2xl font-bold text-text-primary sm:text-3xl">
+                                Exklusives Angebot des Tages
+                            </h3>
+
+                            <p className="mt-3 max-w-2xl text-base text-zinc-400">
+                                Dieses Angebot wird aktuell von unserem Team geprüft.
+                                Schau bald wieder vorbei – täglich neue Top-Deals!
+                            </p>
+
+                            <div className="mt-6 flex flex-wrap items-center gap-4">
+                                <span className="text-sm text-zinc-500">
+                                    ⏳ Limitierte Aktion – gültig solange der Vorrat reicht
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Holzquerbalken (dark) ────────────────────────────────────── */}
+            <HolzBalken dark />
+
+            {/* ══════════════════════════════════════════════════════════════════
+            VERTRAUENS-BEREICH
+            ══════════════════════════════════════════════════════════════════ */}
+            <section className="relative overflow-hidden bg-surface py-16 sm:py-20">
+                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="text-center">
+                        <h2 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                            Darum vertrauen uns tausende Nutzer
+                        </h2>
+                    </div>
+
+                    <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+                        {TRUST_ITEMS.map((item, i) => (
+                            <div
+                                key={i}
+                                className="card-base card-holz-border flex flex-col items-center p-8 text-center"
+                            >
+                                <span className="flex h-16 w-16 items-center justify-center rounded-xl bg-holz-dark text-3xl">
+                                    {item.icon}
+                                </span>
+                                <h3 className="mt-4 text-lg font-bold text-text-primary">
+                                    {item.title}
+                                </h3>
+                                <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                                    {item.description}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Holzquerbalken ────────────────────────────────────────────── */}
+            <HolzBalken />
+
+            {/* ══════════════════════════════════════════════════════════════════
+            TESTIMONIALS
+            ══════════════════════════════════════════════════════════════════ */}
+            <Testimonials />
+
+            {/* ── Holzquerbalken (dark) ────────────────────────────────────── */}
+            <HolzBalken dark />
+
+            {/* ══════════════════════════════════════════════════════════════════
+            NEWSLETTER SIGNUP
+            ══════════════════════════════════════════════════════════════════ */}
+            <NewsletterSignup />
+
+            {/* ── Holzquerbalken ────────────────────────────────────────────── */}
+            <HolzBalken />
+
+            {/* ══════════════════════════════════════════════════════════════════
+            RATGEBER-VORSCHAU
+            ══════════════════════════════════════════════════════════════════ */}
+            <section
+                id="ratgeber"
+                className="relative overflow-hidden bg-surface py-16 sm:py-24"
+            >
+                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="text-center">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-holz-dark/50 px-4 py-1 text-sm font-medium text-gold-primary">
+                            📖 Ratgeber
+                        </span>
+                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
+                            Clever sparen – unsere Tipps
+                        </h2>
+                        <p className="mt-3 text-lg text-zinc-400">
+                            Praxisnahe Ratgeber zu Versicherungen, Finanzen und mehr.
+                        </p>
+                    </div>
+
+                    <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        {RATGEBER_ARTICLES.map((article, i) => (
+                            <a
+                                key={i}
+                                href={`/ratgeber/${article.slug}`}
+                                className="card-base card-holz-border group flex flex-col p-6"
+                            >
+                                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-holz-dark text-2xl transition-all duration-300 group-hover:scale-110">
+                                    {article.icon}
+                                </span>
+                                <h3 className="mt-4 text-base font-bold text-text-primary group-hover:text-gold-primary transition-colors">
+                                    {article.title}
+                                </h3>
+                                <p className="mt-2 text-sm leading-relaxed text-zinc-500 flex-1">
+                                    {article.excerpt}
+                                </p>
+                                <span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-gold-primary transition-all group-hover:gap-2">
+                                    Weiterlesen
+                                    <span className="transition-transform group-hover:translate-x-0.5">→</span>
+                                </span>
                             </a>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* ─── CHECK24 Category Comparisons ─────────────────────────── */}
-            <Check24CategoryCards />
+            {/* ── Holzquerbalken (bottom) ──────────────────────────────────── */}
+            <HolzBalken dark />
 
-            {/* ─── GOLD QUERBALKEN II ──────────────────────────────────── */}
-            <div className="relative overflow-hidden">
-                <div className="h-px bg-gradient-to-r from-transparent via-gold-primary/50 to-transparent" />
-                <div className="relative bg-gradient-to-r from-surface via-gold-primary/5 to-surface py-4">
-                    <div className="mx-auto flex max-w-3xl items-center justify-center gap-3 px-4">
-                        <span className="text-gold-primary/60">✦</span>
-                        <span className="text-sm text-zinc-500 italic">
-                            &bdquo;Vergleichen ist wie Cocktail probieren – einmal anfangen, willste nicht mehr aufhören!&ldquo;
-                        </span>
-                        <span className="text-gold-primary/60">✦</span>
-                    </div>
-                </div>
-                <div className="h-px bg-gradient-to-r from-transparent via-gold-primary/30 to-transparent" />
-            </div>
+            {/* ══════════════════════════════════════════════════════════════════
+            STICKY CTA (mobile only)
+            ══════════════════════════════════════════════════════════════════ */}
+            <StickyCta />
 
-            {/* ─── Tech Deals Preview (Amazon) ──────────────────────────── */}
-            <section className="relative overflow-hidden bg-surface py-16 sm:py-24">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(245,197,24,0.03),transparent_60%)]" />
-                <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-gold-primary/20 to-transparent" />
-                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="text-center">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/40 bg-gold-dark/30 px-4 py-1 text-sm font-medium text-gold-primary">
-                            💻 Lounge-Tech
-                        </span>
-                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-text-primary">
-                            Tech-Deals entdecken
-                        </h2>
-                        <p className="mt-3 text-lg text-zinc-500">
-                            Laptops, Monitore & Zubehör – in der Lounge immer stark reduziert! 🏷️
-                        </p>
-                    </div>
-                    <div className="mt-10">
-                        <TechDeals featured maxItems={4} />
-                    </div>
-                    <div className="mt-6 text-center">
-                        <a
-                            href="/deals"
-                            className="inline-flex items-center gap-2 text-sm font-medium text-gold-primary transition-all hover:text-gold-primary/80 hover:gap-3"
-                        >
-                            Alle Tech-Deals ansehen → 🚀
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            {/* ─── GOLD QUERBALKEN III ─────────────────────────────────── */}
-            <div className="relative overflow-hidden">
-                <div className="h-px bg-gradient-to-r from-transparent via-gold-primary/50 to-transparent" />
-                <div className="relative bg-gradient-to-r from-surface via-gold-primary/5 to-surface py-4">
-                    <div className="mx-auto flex max-w-3xl items-center justify-center gap-3 px-4">
-                        <span className="text-gold-primary/60">✦</span>
-                        <span className="text-sm text-zinc-500 italic">
-                            &bdquo;In der Lounge ist jeder Tag 'Spar-d your enthusiasm'-Tag!&ldquo; 😄
-                        </span>
-                        <span className="text-gold-primary/60">✦</span>
-                    </div>
-                </div>
-                <div className="h-px bg-gradient-to-r from-transparent via-gold-primary/30 to-transparent" />
-            </div>
-
-            {/* ─── Testimonials ──────────────────────────────────────────── */}
-            <Testimonials />
-
-            {/* ─── Digistore24 Deals Preview ─────────────────────────────── */}
-            <section className="relative overflow-hidden bg-surface py-16 sm:py-24">
-                <div className="absolute top-0 left-1/4 right-1/4 h-px animate-shimmer-gold" />
-                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="text-center">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/40 bg-gold-dark/30 px-4 py-1 text-sm font-medium text-gold-primary">
-                            📚 Lounge-Wissen
-                        </span>
-                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-text-primary">
-                            Sparen mit Köpfchen
-                        </h2>
-                        <p className="mt-3 text-lg text-zinc-500">
-                            E-Books & Kurse mit bis zu 70% Provision – Wissen, das sich auszahlt! 🎓
-                        </p>
-                    </div>
-                    <div className="mt-10">
-                        <DigistoreDeals featured maxItems={4} />
-                    </div>
-                    <div className="mt-6 text-center">
-                        <a
-                            href="/deals"
-                            className="inline-flex items-center gap-2 text-sm font-medium text-gold-primary transition-all hover:text-gold-primary/80 hover:gap-3"
-                        >
-                            Alle Deals entdecken → 🚀
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            {/* ─── GOLD QUERBALKEN IV ──────────────────────────────────── */}
-            <div className="relative overflow-hidden">
-                <div className="h-px bg-gradient-to-r from-transparent via-gold-primary/50 to-transparent" />
-                <div className="relative bg-gradient-to-r from-surface via-gold-primary/5 to-surface py-6">
-                    <div className="mx-auto flex max-w-3xl items-center justify-center gap-4 px-4">
-                        <div className="h-px flex-1 bg-gradient-to-l from-gold-primary/30 to-transparent" />
-                        <span className="inline-flex items-center gap-2 text-sm font-medium text-gold-primary/80">
-                            🛋️ In der BudgetScout Lounge ist jeder Vergleich ein Genuss.
-                        </span>
-                        <div className="h-px flex-1 bg-gradient-to-r from-gold-primary/30 to-transparent" />
-                    </div>
-                </div>
-                <div className="h-px bg-gradient-to-r from-transparent via-gold-primary/30 to-transparent" />
-            </div>
-
-            {/* ─── Trust Signals (Lounge Edition) ────────────────────────── */}
-            <section className="relative overflow-hidden bg-surface py-16 sm:py-24">
-                <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <div className="text-center">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-gold-dark/50 px-4 py-1 text-sm font-medium text-gold-primary">
-                            💪 Lounge-Vorteile
-                        </span>
-                        <h2 className="mt-4 text-2xl font-bold text-text-primary sm:text-3xl">
-                            Darum lieben uns unsere Lounge-Gäste
-                        </h2>
-                    </div>
-                    <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-3">
-                        <div className="group rounded-xl border border-gold-accent bg-gold-dark/40 p-8 text-center shadow-sm transition-all duration-300 hover:border-gold-primary/50 hover:shadow-gold-glow-lg hover:-translate-y-1">
-                            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-gold-dark to-gold-accent text-3xl shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
-                                🦊
-                            </div>
-                            <h3 className="mt-4 text-lg font-semibold text-text-primary">
-                                Unabhängig
-                            </h3>
-                            <p className="mt-2 text-sm text-zinc-400">
-                                Neutral wie ein Lounge-Barkeeper, der jedem den perfekten Drink mixt.
-                            </p>
-                        </div>
-                        <div className="group rounded-xl border border-gold-accent bg-gold-dark/40 p-8 text-center shadow-sm transition-all duration-300 hover:border-gold-primary/50 hover:shadow-gold-glow-lg hover:-translate-y-1">
-                            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-gold-dark to-gold-accent text-3xl shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:-rotate-6">
-                                🛡️
-                            </div>
-                            <h3 className="mt-4 text-lg font-semibold text-text-primary">
-                                Sicher
-                            </h3>
-                            <p className="mt-2 text-sm text-zinc-400">
-                                Deine Daten sind sicherer als die Bar-Reserve im Tresor.
-                            </p>
-                        </div>
-                        <div className="group rounded-xl border border-gold-accent bg-gold-dark/40 p-8 text-center shadow-sm transition-all duration-300 hover:border-gold-primary/50 hover:shadow-gold-glow-lg hover:-translate-y-1">
-                            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-gold-dark to-gold-accent text-3xl shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
-                                🎁
-                            </div>
-                            <h3 className="mt-4 text-lg font-semibold text-text-primary">
-                                Kostenlos
-                            </h3>
-                            <p className="mt-2 text-sm text-zinc-400">
-                                Der Vergleich kostet keinen Cent – der Drink geht auch aufs Haus! 🥂
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ─── Gamification Badges ───────────────────────────────────── */}
-            <GamificationBadges />
-
-            {/* ─── CTA Section (Lounge Closing) ──────────────────────────── */}
-            <section className="relative overflow-hidden bg-surface py-20">
-                {/* Warm gold glow */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,197,24,0.08),transparent_60%)]" />
-                <div className="absolute top-0 left-0 right-0 h-px animate-shimmer-gold" />
-                <div className="absolute bottom-0 left-0 right-0 h-px animate-shimmer-gold" />
-
-                {/* Floating lounge elements */}
-                <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                    <span className="absolute left-[10%] top-[20%] animate-float-gentle text-3xl opacity-30">🥂</span>
-                    <span className="absolute right-[15%] top-[30%] animate-float-gentle text-2xl opacity-30" style={{ animationDelay: "1s" }}>✨</span>
-                    <span className="absolute left-[25%] bottom-[25%] animate-float-gentle text-3xl opacity-30" style={{ animationDelay: "2s" }}>🎵</span>
-                    <span className="absolute right-[20%] bottom-[20%] animate-float-gentle text-2xl opacity-30" style={{ animationDelay: "3s" }}>🍸</span>
-                </div>
-
-                <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-                    <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-gold-dark/30 px-4 py-1.5 text-sm text-gold-primary">
-                        🛋️ Lounge schließt nie
-                    </div>
-                    <h2 className="text-4xl font-bold tracking-tight text-text-primary sm:text-5xl">
-                        Bereit zum Sparen?
-                    </h2>
-                    <p className="mt-4 text-xl text-zinc-500">
-                        Tausend andere haben schon in der Lounge gespart – jetzt bist Du dran! 🚀
-                    </p>
-                    <p className="mt-2 text-sm italic text-zinc-600">
-                        &bdquo;Der beste Zeitpunkt zum Sparen? Gestern. Der zweitbeste? Jetzt!&ldquo; 🐷
-                    </p>
-                    <button
-                        onClick={() => {
-                            fire(50, 80)
-                            document
-                                .getElementById("kategorien")
-                                ?.scrollIntoView({ behavior: "smooth" })
-                        }}
-                        className="mt-8 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-gold-primary to-yellow-500 px-8 py-4 text-base font-semibold text-gold-dark shadow-lg shadow-gold-primary/25 transition-all hover:from-gold-primary/90 hover:to-yellow-400 hover:scale-105 hover:shadow-xl hover:shadow-gold-primary/30 active:scale-95"
-                    >
-                        Jetzt vergleichen 🥂
-                    </button>
-                </div>
-            </section>
-
-            {/* ─── Mascot (floating piggy) ────────────────────────────────── */}
-            <Mascot />
+            {/* ══════════════════════════════════════════════════════════════════
+            EXIT INTENT POPUP (full-page overlay)
+            ══════════════════════════════════════════════════════════════════ */}
+            <ExitIntentPopup />
         </div>
     )
 }

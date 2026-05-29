@@ -213,7 +213,7 @@ export const CATEGORY_DEEP_LINKS: Record<Slug, DeepLinkConfig> = {
             "https://www.check24.de/mietwagen/?affiliate=PARTNER_ID&subid=kategorie-mietwagen",
     },
     reisen: {
-        basePath: "/hotel/",
+        basePath: "/reise/",
         params: [
             {
                 param: "ziel",
@@ -236,6 +236,63 @@ export const CATEGORY_DEEP_LINKS: Record<Slug, DeepLinkConfig> = {
         ],
         exampleUrl:
             "https://www.check24.de/hotel/?affiliate=PARTNER_ID&subid=kategorie-reisen",
+    },
+    "kredite": {
+        basePath: "/kredit/",
+        params: [
+            {
+                param: "kreditsumme",
+                label: "Kreditsumme",
+                type: "number",
+                placeholder: "z.B. 10000",
+                required: true,
+                unit: "€",
+            },
+            {
+                param: "laufzeit",
+                label: "Laufzeit (Monate)",
+                type: "select",
+                required: false,
+                options: [
+                    { label: "12 Monate", value: "12" },
+                    { label: "24 Monate", value: "24" },
+                    { label: "36 Monate", value: "36" },
+                    { label: "48 Monate", value: "48" },
+                    { label: "60 Monate", value: "60" },
+                    { label: "84 Monate", value: "84" },
+                ],
+                defaultValue: "60",
+            },
+        ],
+        exampleUrl:
+            "https://www.check24.de/kredit/?kreditsumme=10000&affiliate=PARTNER_ID&subid=kategorie-kredite",
+    },
+    "krankenversicherung": {
+        basePath: "/krankenversicherung/",
+        params: [
+            {
+                param: "alter",
+                label: "Alter",
+                type: "number",
+                placeholder: "z.B. 30",
+                required: true,
+                unit: "Jahre",
+            },
+            {
+                param: "beruf",
+                label: "Beruf / Status",
+                type: "select",
+                required: true,
+                options: [
+                    { label: "Angestellt", value: "angestellt" },
+                    { label: "Selbstständig", value: "selbststaendig" },
+                    { label: "Beamter", value: "beamter" },
+                    { label: "Student", value: "student" },
+                ],
+            },
+        ],
+        exampleUrl:
+            "https://www.check24.de/krankenversicherung/?alter=30&affiliate=PARTNER_ID&subid=kategorie-krankenversicherung",
     },
 }
 

@@ -3,7 +3,7 @@
 // ============================================================================
 // Centralized SEO configuration with a global year-keyword replacement system.
 // Enables site-wide year updates (e.g. "2026" → "2027") by changing a single
-// config value. Includes Schema.org structured data generators.
+// config value. Includes Schema.org structured data generators for rich results.
 // ============================================================================
 
 import type { Metadata } from "next"
@@ -30,10 +30,28 @@ export const SEO_CONFIG = {
     /** Site name for structured data */
     siteName: "BudgetScout.de",
     /** Twitter handle (optional) */
-    twitterHandle: undefined as string | undefined,
+    twitterHandle: "@BudgetScoutDE" as string | undefined,
     /** Default Open Graph image path */
     defaultOgImage: "/images/og-default.jpg",
-}
+    /** Organization details for Schema.org */
+    organization: {
+        name: "BudgetScout.de",
+        legalName: "BudgetScout.de Vergleichsportal",
+        url: "https://budgetscout.de",
+        logo: "https://budgetscout.de/images/logo.png",
+        description: "Unabhängiges Vergleichsportal für Kfz-Versicherung, Strom, DSL, Kredite und Krankenversicherung.",
+        address: {
+            street: "Musterstraße 123",
+            locality: "Berlin",
+            postalCode: "10115",
+            country: "DE",
+        },
+        contactEmail: "info@budgetscout.de",
+        foundingDate: "2024-01-01",
+    },
+    /** Google Search Console verification */
+    googleVerification: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || "",
+} as const
 
 // ─── Year Keyword Replacement ──────────────────────────────────────────────
 
@@ -128,6 +146,7 @@ export function buildSEOData(options: BuildSEODataOptions): SEOData {
 
 /**
  * Generate WebSite schema.org structured data.
+ * Includes SearchAction for Google Sitelinks search box.
  */
 export function generateWebSiteSchema() {
     return {
@@ -149,7 +168,36 @@ export function generateWebSiteSchema() {
 }
 
 /**
+ * Generate Organization schema.org structured data.
+ * Adds logo, contact info, social profiles for rich results.
+ */
+export function generateOrganizationSchema() {
+    return {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: SEO_CONFIG.organization.name,
+        legalName: SEO_CONFIG.organization.legalName,
+        url: SEO_CONFIG.organization.url,
+        logo: SEO_CONFIG.organization.logo,
+        description: SEO_CONFIG.organization.description,
+        foundingDate: SEO_CONFIG.organization.foundingDate,
+        email: SEO_CONFIG.organization.contactEmail,
+        address: {
+            "@type": "PostalAddress",
+            streetAddress: SEO_CONFIG.organization.address.street,
+            addressLocality: SEO_CONFIG.organization.address.locality,
+            postalCode: SEO_CONFIG.organization.address.postalCode,
+            addressCountry: SEO_CONFIG.organization.address.country,
+        },
+        sameAs: [
+            "https://www.facebook.com/budgetscout",
+        ],
+    }
+}
+
+/**
  * Generate Article schema.org structured data.
+ * Includes full publisher and author markup for rich search results.
  */
 export function generateArticleSchema(seo: SEOData, options: {
     headline: string
@@ -171,9 +219,22 @@ export function generateArticleSchema(seo: SEOData, options: {
         publisher: {
             "@type": "Organization",
             name: SEO_CONFIG.siteName,
+            logo: {
+                "@type": "ImageObject",
+                url: SEO_CONFIG.organization.logo,
+            },
         },
         description: seo.description,
-        ...(options.imageUrl ? { image: options.imageUrl } : {}),
+        ...(options.imageUrl
+            ? {
+                image: {
+                    "@type": "ImageObject",
+                    url: options.imageUrl,
+                    width: 1200,
+                    height: 630,
+                },
+            }
+            : {}),
         mainEntityOfPage: {
             "@type": "WebPage",
             "@id": seo.canonicalUrl || SEO_CONFIG.baseUrl,
@@ -217,11 +278,77 @@ export function generateFAQSchema(
     }
 }
 
+/**
+ * Generate Product schema for Digistore24 / affiliate product pages.
+ * Helps Google show rich product results in SERPs.
+ */
+export function generateProductSchema(options: {
+    name: string
+    description: string
+    url: string
+    image?: string
+    price?: string
+    priceCurrency?: string
+    availability?: string
+}) {
+    return {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: options.name,
+        description: options.description,
+        url: options.url,
+        ...(options.image ? { image: options.image } : {}),
+        ...(options.price
+            ? {
+                offers: {
+                    "@type": "Offer",
+                    price: options.price,
+                    priceCurrency: options.priceCurrency || "EUR",
+                    availability: options.availability || "https://schema.org/InStock",
+                    url: options.url,
+                },
+            }
+            : {}),
+    }
+}
+
+/**
+ * Generate a combined LocalBusiness + Organization schema for location pages.
+ */
+export function generateLocalBusinessSchema() {
+    return {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        name: SEO_CONFIG.organization.name,
+        url: SEO_CONFIG.organization.url,
+        logo: SEO_CONFIG.organization.logo,
+        description: SEO_CONFIG.organization.description,
+        email: SEO_CONFIG.organization.contactEmail,
+        address: {
+            "@type": "PostalAddress",
+            streetAddress: SEO_CONFIG.organization.address.street,
+            addressLocality: SEO_CONFIG.organization.address.locality,
+            postalCode: SEO_CONFIG.organization.address.postalCode,
+            addressCountry: SEO_CONFIG.organization.address.country,
+        },
+    }
+}
+
 // ─── Next.js Metadata Generator ───────────────────────────────────────────
+
+/**
+ * Resolve an OG image URL — handles both relative and absolute paths.
+ */
+function resolveOgImage(image?: string): string | undefined {
+    if (!image) return undefined
+    if (image.startsWith("http")) return image
+    return `${SEO_CONFIG.baseUrl}${image.startsWith("/") ? "" : "/"}${image}`
+}
 
 /**
  * Generate Next.js App Router compatible Metadata from SEOData.
  * Use this in `generateMetadata()` export of page components.
+ * Includes full Open Graph, Twitter Card, and canonical support.
  *
  * @example
  * ```ts
@@ -233,6 +360,8 @@ export function generateFAQSchema(
  * ```
  */
 export function generatePageMetadata(seo: SEOData): Metadata {
+    const ogImage = resolveOgImage(seo.ogImage || SEO_CONFIG.defaultOgImage)
+
     return {
         title: seo.title,
         description: seo.description,
@@ -240,31 +369,31 @@ export function generatePageMetadata(seo: SEOData): Metadata {
         ...(seo.canonicalUrl
             ? { alternates: { canonical: seo.canonicalUrl } }
             : {}),
-        ...(seo.noindex ? { robots: { index: false, follow: false } } : {}),
+        ...(seo.noindex
+            ? { robots: { index: false, follow: false } }
+            : {
+                robots: {
+                    index: true,
+                    follow: true,
+                },
+            }),
         openGraph: {
             title: seo.title,
             description: seo.description,
             type: seo.ogType ?? "website",
-            ...(seo.ogImage ? { images: [{ url: seo.ogImage }] } : {}),
+            ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
             siteName: SEO_CONFIG.siteName,
             locale: SEO_CONFIG.locale,
+            ...(SEO_CONFIG.twitterHandle ? {} : {}),
         },
         twitter: {
             card: "summary_large_image",
             title: seo.title,
             description: seo.description,
-            ...(seo.ogImage ? { images: [seo.ogImage] } : {}),
+            ...(ogImage ? { images: [ogImage] } : {}),
+            site: SEO_CONFIG.twitterHandle,
+            creator: SEO_CONFIG.twitterHandle,
         },
-        ...(SEO_CONFIG.twitterHandle
-            ? {
-                twitter: {
-                    card: "summary_large_image",
-                    site: SEO_CONFIG.twitterHandle,
-                    title: seo.title,
-                    description: seo.description,
-                },
-            }
-            : {}),
     }
 }
 
