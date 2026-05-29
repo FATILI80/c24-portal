@@ -129,14 +129,39 @@ export default function HomeClient({
             {/* ─── Sparometer ────────────────────────────────────────────── */}
             <Sparometer />
 
-            {/* ─── Lounge Saying Banner ──────────────────────────────────── */}
-            <section className="relative overflow-hidden bg-zinc-950 py-8">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.03),transparent_70%)]" />
-                <div className="relative mx-auto max-w-4xl px-4 text-center">
-                    <p className="text-lg font-medium italic text-zinc-400">
-                        &bdquo;Geld sparen ist wie 'n guter Lounge-Cocktail – die Mischung machts!&ldquo;
-                        <span className="block mt-2 text-amber-500 text-sm not-italic">🍸 BudgetScout Lounge</span>
-                    </p>
+            {/* ─── GOLD QUERBALKEN I ───────────────────────────────────── */}
+            <div className="relative overflow-hidden">
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
+                <div className="relative bg-gradient-to-r from-zinc-950 via-amber-950/10 to-zinc-950 py-6">
+                    <div className="mx-auto flex max-w-3xl items-center justify-center gap-4 px-4">
+                        <div className="h-px flex-1 bg-gradient-to-l from-amber-500/30 to-transparent" />
+                        <span className="inline-flex items-center gap-2 text-sm font-medium text-amber-400/80">
+                            🥂 Geld sparen ist wie 'n guter Lounge-Cocktail – die Mischung machts!
+                        </span>
+                        <div className="h-px flex-1 bg-gradient-to-r from-amber-500/30 to-transparent" />
+                    </div>
+                </div>
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+            </div>
+
+            {/* ─── WOW STATS SECTION ──────────────────────────────────────── */}
+            <section className="relative overflow-hidden bg-zinc-950 py-14">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.04),transparent_60%)]" />
+                <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+                    <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+                        {[
+                            { value: "274.839+", label: "Euro gespart", icon: "💰" },
+                            { value: "12.458", label: "Vergleiche durchgeführt", icon: "📊" },
+                            { value: "4.921", label: "Lounge-Gäste", icon: "🛋️" },
+                            { value: "1.847", label: "Badges verliehen", icon: "🏆" },
+                        ].map((stat, i) => (
+                            <div key={i} className="group rounded-2xl border border-zinc-800 bg-zinc-900/30 p-6 text-center transition-all duration-300 hover:border-amber-700/50 hover:bg-zinc-900/60">
+                                <span className="text-3xl transition-transform duration-300 group-hover:scale-125">{stat.icon}</span>
+                                <p className="mt-2 text-2xl font-black text-amber-400 tabular-nums">{stat.value}</p>
+                                <p className="mt-1 text-xs text-zinc-500">{stat.label}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
@@ -327,15 +352,31 @@ export default function HomeClient({
                 </div>
             </section>
 
+            {/* ─── GOLD QUERBALKEN II ──────────────────────────────────── */}
+            <div className="relative overflow-hidden">
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
+                <div className="relative bg-gradient-to-r from-zinc-950 via-amber-950/10 to-zinc-950 py-4">
+                    <div className="mx-auto flex max-w-3xl items-center justify-center gap-3 px-4">
+                        <span className="text-amber-500/60">✦</span>
+                        <span className="text-sm text-zinc-500 italic">
+                            &bdquo;Vergleichen ist wie Cocktail probieren – einmal anfangen, willste nicht mehr aufhören!&ldquo;
+                        </span>
+                        <span className="text-amber-500/60">✦</span>
+                    </div>
+                </div>
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+            </div>
+
             {/* ─── Tech Deals Preview (Amazon) ──────────────────────────── */}
-            <section className="relative overflow-hidden bg-gradient-to-b from-white to-zinc-50 py-16 sm:py-24 dark:from-zinc-900 dark:to-zinc-950">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(245,158,11,0.02),transparent_60%)]" />
+            <section className="relative overflow-hidden bg-zinc-950 py-16 sm:py-24">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(245,158,11,0.03),transparent_60%)]" />
+                <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
                 <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1 text-sm font-medium text-amber-700 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-400">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-amber-800/40 bg-amber-950/30 px-4 py-1 text-sm font-medium text-amber-400">
                             💻 Lounge-Tech
                         </span>
-                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                        <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-100">
                             Tech-Deals entdecken
                         </h2>
                         <p className="mt-3 text-lg text-zinc-600 dark:text-zinc-400">
@@ -348,13 +389,28 @@ export default function HomeClient({
                     <div className="mt-6 text-center">
                         <a
                             href="/deals"
-                            className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 transition-all hover:text-amber-500 hover:gap-3 dark:text-amber-400"
+                            className="inline-flex items-center gap-2 text-sm font-medium text-amber-400 transition-all hover:text-amber-300 hover:gap-3"
                         >
                             Alle Tech-Deals ansehen → 🚀
                         </a>
                     </div>
                 </div>
             </section>
+
+            {/* ─── GOLD QUERBALKEN III ─────────────────────────────────── */}
+            <div className="relative overflow-hidden">
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
+                <div className="relative bg-gradient-to-r from-zinc-950 via-amber-950/10 to-zinc-950 py-4">
+                    <div className="mx-auto flex max-w-3xl items-center justify-center gap-3 px-4">
+                        <span className="text-amber-500/60">✦</span>
+                        <span className="text-sm text-zinc-500 italic">
+                            &bdquo;In der Lounge ist jeder Tag 'Spar-d your enthusiasm'-Tag!&ldquo; 😄
+                        </span>
+                        <span className="text-amber-500/60">✦</span>
+                    </div>
+                </div>
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+            </div>
 
             {/* ─── Testimonials ──────────────────────────────────────────── */}
             <Testimonials />
@@ -388,22 +444,23 @@ export default function HomeClient({
                 </div>
             </section>
 
-            {/* ─── Lounge Saying Banner 2 ────────────────────────────────── */}
-            <section className="relative overflow-hidden bg-gradient-to-r from-zinc-950 via-amber-950/20 to-zinc-950 py-10">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.05),transparent_70%)]" />
-                <div className="relative mx-auto max-w-4xl px-4 text-center">
-                    <div className="flex flex-wrap items-center justify-center gap-3 text-lg">
-                        <span className="text-2xl">🛋️</span>
-                        <span className="text-zinc-400 italic">
-                            &bdquo;In der BudgetScout Lounge ist jeder Vergleich ein Genuss.&ldquo;
+            {/* ─── GOLD QUERBALKEN IV ──────────────────────────────────── */}
+            <div className="relative overflow-hidden">
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent" />
+                <div className="relative bg-gradient-to-r from-zinc-950 via-amber-950/10 to-zinc-950 py-6">
+                    <div className="mx-auto flex max-w-3xl items-center justify-center gap-4 px-4">
+                        <div className="h-px flex-1 bg-gradient-to-l from-amber-500/30 to-transparent" />
+                        <span className="inline-flex items-center gap-2 text-sm font-medium text-amber-400/80">
+                            🛋️ In der BudgetScout Lounge ist jeder Vergleich ein Genuss.
                         </span>
-                        <span className="text-2xl">🥂</span>
+                        <div className="h-px flex-1 bg-gradient-to-r from-amber-500/30 to-transparent" />
                     </div>
                 </div>
-            </section>
+                <div className="h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
+            </div>
 
             {/* ─── Trust Signals (Lounge Edition) ────────────────────────── */}
-            <section className="relative overflow-hidden bg-gradient-to-b from-zinc-50 to-white py-16 sm:py-24 dark:from-zinc-900 dark:to-zinc-950">
+            <section className="relative overflow-hidden bg-zinc-950 py-16 sm:py-24">
                 <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
                         <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1 text-sm font-medium text-amber-700 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-400">
