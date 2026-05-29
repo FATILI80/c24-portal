@@ -76,13 +76,13 @@ export default function FunFacts() {
   const fact = FUN_FACTS[current]
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-r from-zinc-950 via-amber-950/10 to-zinc-950 py-10">
+    <section className="relative overflow-hidden bg-gradient-to-r from-surface via-gold-primary/5 to-surface py-10">
       {/* Subtle gold top border */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-700/30 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-700/20 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-primary/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-primary/20 to-transparent" />
 
       <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
-        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-800/30 bg-amber-950/30 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-400">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-gold-dark/30 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-gold-primary">
           💡 Lounge-Wissen des Moments
         </div>
         <div
@@ -109,8 +109,8 @@ export default function FunFacts() {
                 }, 400)
               }}
               className={`h-2 rounded-full transition-all ${i === current
-                  ? "w-6 bg-amber-500"
-                  : "w-2 bg-amber-800/40 hover:bg-amber-700/60"
+                ? "w-6 bg-gold-primary"
+                : "w-2 bg-gold-primary/30 hover:bg-gold-primary/60"
                 }`}
               aria-label={`Fact ${i + 1}`}
             />

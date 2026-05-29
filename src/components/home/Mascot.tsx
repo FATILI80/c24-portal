@@ -47,12 +47,12 @@ export default function Mascot() {
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
             {/* Speech Bubble */}
             <div
-                className={`relative max-w-[260px] rounded-2xl bg-gradient-to-r from-amber-400 to-orange-400 px-4 py-3 text-sm font-medium text-white shadow-lg transition-all duration-300 ${isBouncing ? "scale-95 opacity-50" : "scale-100 opacity-100"
+                className={`relative max-w-[260px] rounded-2xl bg-gradient-to-r from-gold-primary to-yellow-500 px-4 py-3 text-sm font-medium text-gold-dark shadow-lg transition-all duration-300 ${isBouncing ? "scale-95 opacity-50" : "scale-100 opacity-100"
                     }`}
             >
                 <p>{spruch}</p>
                 {/* Speech bubble arrow */}
-                <div className="absolute -bottom-2 right-8 h-4 w-4 rotate-45 bg-orange-400" />
+                <div className="absolute -bottom-2 right-8 h-4 w-4 rotate-45 bg-yellow-500" />
             </div>
 
             {/* Piggy Mascot */}

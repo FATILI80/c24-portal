@@ -46,17 +46,17 @@ function TechProductCard({ product }: { product: AmazonProduct }) {
             href={product.affiliateUrl}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            className="group relative flex flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white transition-all duration-300 hover:border-blue-300 hover:shadow-lg hover:-translate-y-1 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-blue-700"
+            className="group relative flex flex-col overflow-hidden rounded-xl border border-gold-accent bg-gold-dark/40 transition-all duration-300 hover:border-gold-primary/50 hover:shadow-gold-glow-lg hover:-translate-y-1"
         >
             {/* Badge */}
             {product.badge && (
-                <span className="absolute left-3 top-3 z-10 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-3 py-1 text-xs font-bold text-white shadow-sm">
+                <span className="absolute left-3 top-3 z-10 rounded-full bg-gradient-to-r from-gold-primary to-yellow-600 px-3 py-1 text-xs font-bold text-gold-dark shadow-sm">
                     {product.badge}
                 </span>
             )}
 
             {/* Image placeholder */}
-            <div className="flex h-48 items-center justify-center bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-800 dark:to-zinc-900">
+            <div className="flex h-48 items-center justify-center bg-gradient-to-br from-gold-dark to-gold-accent">
                 {imgError ? (
                     <span className="text-6xl opacity-30">
                         {product.category === "laptop"
@@ -78,13 +78,13 @@ function TechProductCard({ product }: { product: AmazonProduct }) {
 
             {/* Content */}
             <div className="flex flex-1 flex-col p-4">
-                <h3 className="text-sm font-semibold leading-tight text-zinc-900 line-clamp-2 dark:text-zinc-50">
+                <h3 className="text-sm font-semibold leading-tight text-text-primary line-clamp-2">
                     {product.title}
                 </h3>
 
                 {/* Rating */}
                 <div className="mt-1 flex items-center gap-1.5">
-                    <span className="text-xs text-amber-400">
+                    <span className="text-xs text-gold-primary">
                         {renderStars(product.rating)}
                     </span>
                     <span className="text-xs text-zinc-400">
@@ -98,7 +98,7 @@ function TechProductCard({ product }: { product: AmazonProduct }) {
                         {product.features.slice(0, 3).map((f, i) => (
                             <li
                                 key={i}
-                                className="text-xs text-zinc-500 dark:text-zinc-400"
+                                className="text-xs text-zinc-400"
                             >
                                 ✓ {f}
                             </li>
@@ -111,7 +111,7 @@ function TechProductCard({ product }: { product: AmazonProduct }) {
 
                 {/* Price */}
                 <div className="mt-3 flex items-baseline gap-2">
-                    <span className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
+                    <span className="text-xl font-bold text-text-primary">
                         {formatPrice(product.price)}
                     </span>
                     {product.originalPrice && product.originalPrice > product.price && (
@@ -122,7 +122,7 @@ function TechProductCard({ product }: { product: AmazonProduct }) {
                 </div>
 
                 {/* CTA */}
-                <div className="mt-3 flex items-center gap-1 text-sm font-semibold text-blue-600 transition-all group-hover:gap-2 dark:text-blue-400">
+                <div className="mt-3 flex items-center gap-1 text-sm font-semibold text-gold-primary transition-all group-hover:gap-2">
                     <span>Zum Angebot</span>
                     <span>→</span>
                 </div>
@@ -167,12 +167,12 @@ export default function TechDeals({
                 {/* Header */}
                 <div className="text-center">
                     <span className="text-4xl">💻</span>
-                    <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                    <h2 className="mt-3 text-3xl font-bold tracking-tight text-text-primary">
                         Tech-Deals & Spar-Angebote
                     </h2>
-                    <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
+                    <p className="mt-4 text-lg text-zinc-400">
                         Laptops, Monitore und Zubehör zu den besten Preisen –{" "}
-                        <span className="font-semibold text-blue-600 dark:text-blue-400">
+                        <span className="font-semibold text-gold-primary">
                             geprüft von BudgetScout
                         </span>
                     </p>
@@ -186,8 +186,8 @@ export default function TechDeals({
                                 key={cat.key}
                                 onClick={() => setActiveCategory(cat.key)}
                                 className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${activeCategory === cat.key
-                                        ? "bg-blue-600 text-white shadow-md"
-                                        : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                                    ? "bg-gold-primary text-gold-dark shadow-md"
+                                    : "bg-gold-accent/50 text-zinc-400 hover:bg-gold-accent hover:text-gold-primary"
                                     }`}
                             >
                                 <span>{cat.icon}</span>
@@ -209,7 +209,7 @@ export default function TechDeals({
                     <div className="mt-8 text-center">
                         <a
                             href="/deals"
-                            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-700 hover:scale-105 active:scale-95"
+                            className="inline-flex items-center gap-2 rounded-xl bg-gold-primary px-6 py-3 text-sm font-semibold text-gold-dark shadow-sm transition-all hover:bg-gold-primary/90 hover:scale-105 active:scale-95"
                         >
                             Alle Deals anzeigen 🚀
                         </a>

@@ -122,10 +122,10 @@ export default function GamificationBadges() {
             <div className="mx-auto max-w-4xl px-4 sm:px-6">
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="flex w-full items-center justify-between rounded-xl border border-zinc-200 bg-white px-6 py-4 text-left transition-all hover:border-amber-300 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-amber-700"
+                    className="flex w-full items-center justify-between rounded-xl border border-gold-accent bg-gold-dark/40 px-6 py-4 text-left transition-all hover:border-gold-primary/50 hover:shadow-gold-glow"
                 >
                     <div>
-                        <span className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+                        <span className="text-lg font-semibold text-text-primary">
                             🏆 Deine Spar-Erfolge
                         </span>
                         <p className="mt-1 text-sm text-zinc-500">
@@ -150,19 +150,19 @@ export default function GamificationBadges() {
                                 <div
                                     key={badge.id}
                                     className={`relative rounded-xl border p-4 text-center transition-all duration-500 ${isUnlocked
-                                        ? "border-amber-300 bg-amber-50 shadow-sm dark:border-amber-700 dark:bg-amber-950/30"
-                                        : "border-zinc-200 bg-white opacity-40 grayscale dark:border-zinc-800 dark:bg-zinc-950"
-                                        } ${isNew ? "animate-bounce ring-2 ring-amber-400" : ""}`}
+                                        ? "border-gold-primary/50 bg-gold-dark/50 shadow-sm"
+                                        : "border-gold-accent bg-gold-dark/20 opacity-40 grayscale"
+                                        } ${isNew ? "animate-bounce ring-2 ring-gold-primary" : ""}`}
                                 >
                                     <div className="text-3xl">{badge.emoji}</div>
-                                    <p className="mt-2 text-xs font-semibold text-zinc-900 dark:text-zinc-50">
+                                    <p className="mt-2 text-xs font-semibold text-text-primary">
                                         {badge.title}
                                     </p>
                                     <p className="mt-1 text-[10px] leading-tight text-zinc-500">
                                         {isUnlocked ? badge.description : `🔒 ${badge.condition}`}
                                     </p>
                                     {isNew && (
-                                        <div className="absolute -right-2 -top-2 animate-ping-slow rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-bold text-white">
+                                        <div className="absolute -right-2 -top-2 animate-ping-slow rounded-full bg-gold-primary px-2 py-0.5 text-[10px] font-bold text-gold-dark">
                                             NEU
                                         </div>
                                     )}

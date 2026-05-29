@@ -45,17 +45,17 @@ export default function Check24CategoryCards() {
     const categories = getAllCategories()
 
     return (
-        <section className="relative overflow-hidden bg-zinc-950 py-16 sm:py-24">
-            {/* Warm lounge glow */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,158,11,0.03),transparent_60%)]" />
+        <section className="relative overflow-hidden bg-surface py-16 sm:py-24">
+            {/* Warm gold lounge glow */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(245,197,24,0.03),transparent_60%)]" />
 
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Section header */}
                 <div className="text-center">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-amber-800/40 bg-amber-950/30 px-4 py-1 text-sm font-medium text-amber-400">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/40 bg-gold-dark/30 px-4 py-1 text-sm font-medium text-gold-primary">
                         🏆 CHECK24 Vergleichssieger
                     </span>
-                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-100">
+                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-text-primary">
                         Alle Vergleiche auf einen Blick
                     </h2>
                     <p className="mt-3 text-lg text-zinc-500">
@@ -81,21 +81,21 @@ export default function Check24CategoryCards() {
                                 href={link.url}
                                 target="_blank"
                                 rel="noopener noreferrer nofollow"
-                                className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6 shadow-sm transition-all duration-300 hover:border-amber-700/60 hover:bg-zinc-900/70 hover:shadow-lg hover:-translate-y-1"
+                                className="group relative overflow-hidden rounded-xl border border-gold-accent bg-gold-dark/40 p-6 shadow-sm transition-all duration-300 hover:border-gold-primary/60 hover:bg-gold-dark/70 hover:shadow-gold-glow-lg hover:-translate-y-1"
                             >
-                                {/* Warm glow on hover */}
-                                <div className="absolute -inset-1 bg-gradient-to-r from-amber-500/20 to-yellow-500/10 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
+                                {/* Warm gold glow on hover */}
+                                <div className="absolute -inset-1 bg-gradient-to-r from-gold-primary/20 to-yellow-500/10 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
 
                                 <div className="relative flex items-center gap-4">
                                     {/* Category icon */}
-                                    <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-amber-950/40 to-yellow-950/40 text-2xl shadow-sm transition-all duration-300 group-hover:scale-125 group-hover:-rotate-6">
+                                    <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-gold-dark to-gold-accent text-2xl shadow-sm transition-all duration-300 group-hover:scale-125 group-hover:-rotate-6">
                                         {cat.icon}
                                     </span>
                                     <div className="flex-1 min-w-0">
-                                        <h3 className="text-lg font-semibold text-zinc-100 truncate">
+                                        <h3 className="text-lg font-semibold text-text-primary truncate">
                                             {cat.name}
                                         </h3>
-                                        <p className="text-sm font-medium text-amber-400/80">
+                                        <p className="text-sm font-medium text-gold-primary/80">
                                             {cat.shortName}
                                         </p>
                                     </div>
@@ -107,20 +107,20 @@ export default function Check24CategoryCards() {
                                 </p>
 
                                 {/* Tagline */}
-                                <p className="relative mt-3 flex items-center gap-1.5 text-xs font-medium text-amber-500">
+                                <p className="relative mt-3 flex items-center gap-1.5 text-xs font-medium text-gold-primary">
                                     <span>🔥</span>
                                     <span>{check24Info.tagline}</span>
                                 </p>
 
                                 {/* CTA with arrow */}
-                                <div className="relative mt-4 flex items-center gap-2 text-sm font-medium text-amber-400 transition-all group-hover:gap-3">
+                                <div className="relative mt-4 flex items-center gap-2 text-sm font-medium text-gold-primary transition-all group-hover:gap-3">
                                     <span>Direkt zu CHECK24</span>
                                     <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                                     <span className="text-base opacity-0 transition-all group-hover:opacity-100">⚡</span>
                                 </div>
 
                                 {/* Bottom gold shimmer on hover */}
-                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-500/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-gold-primary/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                             </a>
                         )
                     })}

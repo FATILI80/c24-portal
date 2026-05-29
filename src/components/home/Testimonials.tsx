@@ -37,19 +37,19 @@ export default function Testimonials() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
     return (
-        <section className="relative overflow-hidden bg-gradient-to-b from-zinc-50 to-white py-16 dark:from-zinc-900 dark:to-zinc-950">
-            {/* Warm accent */}
-            <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent" />
+        <section className="relative overflow-hidden bg-gradient-to-b from-surface via-gold-dark to-surface py-16">
+            {/* Warm gold accent */}
+            <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-gold-primary/20 to-transparent" />
 
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="text-center">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1 text-sm font-medium text-amber-700 dark:border-amber-800 dark:bg-amber-950/50 dark:text-amber-400">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-gold-dark/50 px-4 py-1 text-sm font-medium text-gold-primary">
                         😂 Lounge-Stammgäste
                     </span>
-                    <h2 className="mt-4 text-2xl font-bold text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+                    <h2 className="mt-4 text-2xl font-bold text-text-primary sm:text-3xl">
                         Das sagen unsere Sparfüchse
                     </h2>
-                    <p className="mt-2 text-zinc-600 dark:text-zinc-400">
+                    <p className="mt-2 text-zinc-400">
                         Echte Menschen. Echte Ersparnisse. Lounge-geprüft. 🥂
                     </p>
                 </div>
@@ -58,9 +58,9 @@ export default function Testimonials() {
                     {TESTIMONIALS.map((t, i) => (
                         <div
                             key={i}
-                            className={`group relative cursor-pointer rounded-2xl border bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:-translate-y-2 dark:border-zinc-800 dark:bg-zinc-950 ${activeIndex === i
-                                    ? "border-amber-400 ring-2 ring-amber-200 dark:ring-amber-800"
-                                    : "border-zinc-200 dark:border-zinc-800"
+                            className={`group relative cursor-pointer rounded-xl border bg-gold-dark/40 p-6 shadow-sm transition-all duration-300 hover:shadow-gold-glow-lg hover:-translate-y-2 ${activeIndex === i
+                                ? "border-gold-primary ring-2 ring-gold-primary/30"
+                                : "border-gold-accent"
                                 }`}
                             onClick={() => setActiveIndex(activeIndex === i ? null : i)}
                         >
@@ -70,25 +70,25 @@ export default function Testimonials() {
                             </div>
 
                             {/* Quote */}
-                            <p className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                            <p className="text-sm leading-relaxed text-zinc-400">
                                 &ldquo;{t.text}&rdquo;
                             </p>
 
-                            {/* Highlight Badge - warm amber */}
-                            <div className="mt-4 inline-block rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                            {/* Highlight Badge - gold */}
+                            <div className="mt-4 inline-block rounded-full bg-gold-dark/50 px-3 py-1 text-xs font-semibold text-gold-primary">
                                 🎉 {t.highlight}
                             </div>
 
                             {/* Author */}
-                            <div className="mt-4 border-t border-zinc-100 pt-3 dark:border-zinc-800">
-                                <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                            <div className="mt-4 border-t border-gold-accent pt-3">
+                                <p className="text-sm font-semibold text-text-primary">
                                     {t.name}
                                 </p>
                                 <p className="text-xs text-zinc-500">{t.role}</p>
                             </div>
 
                             {/* Click hint */}
-                            <span className="absolute right-3 top-3 text-xs text-zinc-300 opacity-0 transition-opacity group-hover:opacity-100 dark:text-zinc-700">
+                            <span className="absolute right-3 top-3 text-xs text-zinc-600 opacity-0 transition-opacity group-hover:opacity-100">
                                 🥂
                             </span>
                         </div>

@@ -13,11 +13,11 @@ interface AffiliateLinkProps {
 
 const variantStyles: Record<string, string> = {
     primary:
-        "inline-flex items-center justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors",
+        "inline-flex items-center justify-center rounded-xl bg-gold-primary px-6 py-3 text-sm font-semibold text-gold-dark shadow-sm hover:bg-gold-primary/90 transition-colors",
     secondary:
-        "inline-flex items-center justify-center rounded-xl bg-zinc-900 px-6 py-3 text-sm font-semibold text-white hover:bg-zinc-800 transition-colors dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200",
+        "inline-flex items-center justify-center rounded-xl bg-gold-dark px-6 py-3 text-sm font-semibold text-gold-primary hover:bg-gold-accent transition-colors",
     outline:
-        "inline-flex items-center justify-center rounded-xl border border-zinc-300 px-6 py-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-50 transition-colors dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-800",
+        "inline-flex items-center justify-center rounded-xl border border-gold-accent px-6 py-3 text-sm font-semibold text-gold-primary hover:bg-gold-dark transition-colors",
 }
 
 /**
