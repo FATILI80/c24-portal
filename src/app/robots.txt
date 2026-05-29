@@ -1,0 +1,8 @@
+# BudgetScout.de – Robots.txt
+# Allow all crawlers, point to sitemap
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://budgetscout.de/sitemap.xml
