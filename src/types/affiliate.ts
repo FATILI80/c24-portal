@@ -1,8 +1,7 @@
 // ============================================================================
-// BATT-SENSE CHECK24 Affiliate Portal — TypeScript Interfaces & Data Models
+// BudgetScout.de — TypeScript Interfaces & Data Models
 // ============================================================================
-// This module defines the core data model for the multi-vertical comparison
-// platform. All category-specific models extend the base `AffiliateContent`.
+// CHECK24 + Digistore24 + Amazon Affiliate Multi-Säulen-Modell
 // ============================================================================
 
 // ─── General Types ────────────────────────────────────────────────────────────
@@ -433,4 +432,76 @@ export interface AffiliateDisclosure {
     text?: string
     /** Date of last review */
     lastReviewed?: ISODate
+}
+
+// ============================================================================
+// DIGISTORE24 + AMAZON AFFILIATE MODELS (Säule B & C)
+// ============================================================================
+
+/** Digistore24 product categories */
+export type Digistore24Category = "ebook" | "course" | "software" | "template"
+
+/** Digistore24 digital product */
+export interface Digistore24Product {
+    /** Unique identifier */
+    id: Slug
+    /** Product title */
+    title: string
+    /** Short description */
+    description: string
+    /** Product image URL */
+    imageUrl: string
+    /** Sale price (€) */
+    price: number
+    /** Original price (€) if discounted */
+    originalPrice?: number
+    /** Currency */
+    currency: "EUR"
+    /** Commission percentage (e.g. 50 = 50%) */
+    commissionPercent: number
+    /** Digistore24 affiliate URL */
+    affiliateUrl: URLString
+    /** Product category */
+    category: Digistore24Category
+    /** Customer rating (1-5) */
+    rating: number
+    /** Vendor/author name */
+    vendor: string
+    /** Badge text (e.g. "Bestseller", "Neu", "-40%") */
+    badge?: string
+    /** Short tagline for cards */
+    tagline?: string
+}
+
+/** Amazon tech product categories */
+export type AmazonTechCategory = "laptop" | "monitor" | "zubehoer"
+
+/** Amazon tech product */
+export interface AmazonProduct {
+    /** Unique identifier */
+    id: Slug
+    /** Product title */
+    title: string
+    /** Short description */
+    description: string
+    /** Product image URL */
+    imageUrl: string
+    /** Current price (€) */
+    price: number
+    /** Original price (€) if discounted */
+    originalPrice?: number
+    /** Currency */
+    currency: "EUR"
+    /** Amazon affiliate URL (PartnerNet) */
+    affiliateUrl: URLString
+    /** Product category */
+    category: AmazonTechCategory
+    /** Customer rating (1-5) */
+    rating: number
+    /** Number of ratings */
+    reviewCount?: number
+    /** Badge text (e.g. "Angebot", "Bestseller", "-30%") */
+    badge?: string
+    /** Key features (bullet points) */
+    features?: string[]
 }

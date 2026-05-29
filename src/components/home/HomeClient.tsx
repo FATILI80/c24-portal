@@ -13,6 +13,8 @@ import Sparometer from "./Sparometer"
 import Testimonials from "./Testimonials"
 import GamificationBadges from "./GamificationBadges"
 import Mascot from "./Mascot"
+import TechDeals from "@/components/affiliate/TechDeals"
+import DigistoreDeals from "@/components/affiliate/DigistoreDeals"
 
 const CATEGORY_CLAIMS: Record<string, string> = {
     "strom-gas": "Kalt erwischt? Hier wird's heiß! 🔥",
@@ -262,8 +264,44 @@ export default function HomeClient({
                 </div>
             </section>
 
+            {/* ─── Tech Deals Preview (Amazon Affiliate) ────────────────── */}
+            <section className="py-16 sm:py-24">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="text-center">
+                        <span className="text-4xl">💻</span>
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                            Tech-Deals entdecken
+                        </h2>
+                        <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
+                            Laptops, Monitore & Zubehör – aktuell stark reduziert! 🏷️
+                        </p>
+                    </div>
+                    <div className="mt-10">
+                        <TechDeals featured maxItems={4} />
+                    </div>
+                </div>
+            </section>
+
             {/* ─── Testimonials ──────────────────────────────────────────── */}
             <Testimonials />
+
+            {/* ─── Digistore24 Deals Preview ─────────────────────────────── */}
+            <section className="bg-zinc-50 py-16 sm:py-24 dark:bg-zinc-900">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="text-center">
+                        <span className="text-4xl">📚</span>
+                        <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                            Sparen mit Köpfchen
+                        </h2>
+                        <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
+                            E-Books & Kurse mit bis zu 70% Provision – Wissen, das sich auszahlt! 🎓
+                        </p>
+                    </div>
+                    <div className="mt-10">
+                        <DigistoreDeals featured maxItems={4} />
+                    </div>
+                </div>
+            </section>
 
             {/* ─── Trust Signals ─────────────────────────────────────────── */}
             <section className="py-16 sm:py-24">

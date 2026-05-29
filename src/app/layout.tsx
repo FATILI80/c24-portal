@@ -121,6 +121,9 @@ export default function RootLayout({
               <a href="/blog" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50">
                 Blog
               </a>
+              <a href="/deals" className="text-sm font-medium text-emerald-600 hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300">
+                🔥 Deals
+              </a>
             </div>
           </nav>
         </header>
