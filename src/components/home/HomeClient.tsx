@@ -91,14 +91,14 @@ const DIGISTORE_PRODUCTS: DigistoreProduct[] = [
         description: "Natürliche Methoden für mehr Vitalität – ohne teure Arztbesuche.",
         category: "Gesundheit",
         filterGroup: "Gesundheit",
-        link: "https://www.digistore24.com/redir/659362/Bb8ozi/",
+        link: "https://www.checkout-ds24.com/redir/659362/Bb8ozi/",
     },
     {
         name: "Gesund & unabhängig leben",
         description: "Praktisches Haushalts-Wissen das bares Geld spart.",
         category: "Gesundheit & Haushalt",
         filterGroup: "Gesundheit",
-        link: "https://www.digistore24.com/redir/659614/Bb8ozi/",
+        link: "https://www.checkout-ds24.com/redir/659614/Bb8ozi/",
     },
     {
         name: "Heilpflanzen selbst anbauen",
@@ -154,7 +154,7 @@ const DIGISTORE_PRODUCTS: DigistoreProduct[] = [
         description: "Schritt-für-Schritt zur finanziellen Unabhängigkeit – auch mit kleinem Budget.",
         category: "Finanzen",
         filterGroup: "Finanzen",
-        link: "https://www.digistore24.com/redir/434104/Bb8ozi/",
+        link: "https://www.checkout-ds24.com/redir/434104/Bb8ozi/",
     },
     {
         name: "Nebeneinkommen mit Social Media",
@@ -175,7 +175,7 @@ const DIGISTORE_PRODUCTS: DigistoreProduct[] = [
         description: "Einnahmen aufbauen die auch dann fließen wenn du schläfst.",
         category: "Online Business",
         filterGroup: "Online Business",
-        link: "https://www.digistore24.com/redir/615173/Bb8ozi/",
+        link: "https://www.checkout-ds24.com/redir/615173/Bb8ozi/",
     },
     {
         name: "Website-Besucher in Kunden verwandeln",

@@ -6,8 +6,12 @@
 // `NEXT_PUBLIC_DIGISTORE24_AFFILIATE_ID`).
 //
 // Es gibt zwei Link-Typen:
-//  1. redir-Links:        https://www.digistore24.com/redir/{NR}/{AFFILIATE}/
+//  1. redir-Links:        https://www.checkout-ds24.com/redir/{NR}/{AFFILIATE}/
 //  2. Anbieter-Links mit  `#aff=`-Anker (Produkte ohne redir-Nummer)
+//
+// WICHTIG: Redir-Links müssen über `www.checkout-ds24.com` laufen.
+// Aufrufe über `www.digistore24.com/redir/...` werden von Digistore24 abgelehnt
+// (Fehlercode CUSDM3), weil die Domain nicht als Partner-Domain freigeschaltet ist.
 //
 // Optional wird ein `subid`-Parameter angehängt. Damit lassen sich Banner-
 // Klicks in der Digistore24-Statistik unterscheiden; für garantiertes
@@ -21,11 +25,16 @@
 export const DIGISTORE_AFFILIATE_ID =
     process.env.NEXT_PUBLIC_DIGISTORE24_AFFILIATE_ID || "Bb8ozi"
 
-/** Standard-Redirect-Endpunkt von Digistore24 */
-export const DIGISTORE_REDIR_BASE = "https://www.digistore24.com/redir"
+/**
+ * Redirect-Endpunkt von Digistore24.
+ *
+ * Muss `www.checkout-ds24.com` sein – `www.digistore24.com/redir/...` wird von
+ * Digistore24 mit dem Fehlercode `CUSDM3` abgelehnt.
+ */
+export const DIGISTORE_REDIR_BASE = "https://www.checkout-ds24.com/redir"
 
-/** Alternativer Checkout-Endpunkt (wird von Digistore24 ebenfalls genutzt) */
-export const DIGISTORE_CHECKOUT_BASE = "https://www.checkout-ds24.com/redir"
+/** @deprecated Alias auf {@link DIGISTORE_REDIR_BASE} (historischer Name). */
+export const DIGISTORE_CHECKOUT_BASE = DIGISTORE_REDIR_BASE
 
 /** Digistore24-Produktnummern sind rein numerisch (z. B. 615173) */
 export const DIGISTORE_PRODUCT_ID_PATTERN = /^\d{4,}$/
@@ -43,7 +52,7 @@ export function isDigistoreProductId(value: string): boolean {
  *
  * @example
  * generateDigistoreLink("615173")
- * // => "https://www.digistore24.com/redir/615173/Bb8ozi/"
+ * // => "https://www.checkout-ds24.com/redir/615173/Bb8ozi/"
  */
 export function generateDigistoreLink(productId: string, subid?: string): string {
     const normalized = (productId || "").trim()
