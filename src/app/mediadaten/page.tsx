@@ -146,10 +146,10 @@ export default function MediadatenPage() {
                         E-Mail und wir besprechen die Details.
                     </p>
                     <a
-                        href="mailto:partner@budgetscout.de"
+                        href="mailto:Oezhanfatih@gmail.com"
                         className="btn-gold mt-6 inline-flex"
                     >
-                        partner@budgetscout.de
+                        Oezhanfatih@gmail.com
                     </a>
                     <p className="mt-4 text-xs text-zinc-600">
                         Oder nutze unser{" "}

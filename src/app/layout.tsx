@@ -6,6 +6,7 @@ import { SEO_CONFIG, generateOrganizationSchema } from "@/lib/seo"
 import { initCategories } from "@/lib/categories-index"
 import { initBlogPosts } from "@/lib/blog-posts"
 import { AFFILIATE_DISCLOSURE_TEXT } from "@/lib/affiliate-links"
+import Footer from "@/components/layout/Footer"
 
 // Initialize all categories and blog posts on app load
 initCategories()
@@ -211,72 +212,7 @@ export default function RootLayout({
         </main>
 
         {/* ─── Footer ───────────────────────────────────────────────────── */}
-        <footer className="border-t border-gold-accent/30 bg-surface">
-          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-              {/* Brand Column */}
-              <div>
-                <a href="/" className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
-                  <span className="text-gold-primary">Budget</span>
-                  <span className="text-text-primary">Scout</span>
-                  <span className="text-xs font-normal text-zinc-500 ml-0.5">.de</span>
-                </a>
-                <p className="mt-3 text-sm leading-relaxed text-zinc-500">
-                  Unabhängige Vergleiche für Kfz-Versicherung, Strom, DSL, Kredite und Krankenversicherung.
-                  Sparen mit einem Klick.
-                </p>
-              </div>
-
-              {/* Vergleich Column */}
-              <div>
-                <h3 className="text-sm font-semibold text-gold-primary">Vergleiche</h3>
-                <ul className="mt-4 space-y-2.5">
-                  <li><a href="https://www.check24.de/kfz-versicherung/" target="_blank" rel="noopener noreferrer nofollow" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Kfz-Versicherung</a></li>
-                  <li><a href="https://www.check24.de/strom/" target="_blank" rel="noopener noreferrer nofollow" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Stromvergleich</a></li>
-                  <li><a href="https://www.check24.de/dsl/" target="_blank" rel="noopener noreferrer nofollow" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">DSL & Internet</a></li>
-                  <li><a href="https://www.check24.de/kredit/" target="_blank" rel="noopener noreferrer nofollow" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Kreditvergleich</a></li>
-                  <li><a href="https://www.check24.de/krankenversicherung/" target="_blank" rel="noopener noreferrer nofollow" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Krankenversicherung</a></li>
-                </ul>
-              </div>
-
-              {/* Service Column */}
-              <div>
-                <h3 className="text-sm font-semibold text-gold-primary">Service</h3>
-                <ul className="mt-4 space-y-2.5">
-                  <li><a href="/ueber-uns" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Über uns</a></li>
-                  <li><a href="/blog" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Ratgeber & Blog</a></li>
-                  <li><a href="/mediadaten" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Mediadaten</a></li>
-                  <li><a href="/kontakt" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Kontakt</a></li>
-                </ul>
-              </div>
-
-              {/* Legal Column */}
-              <div>
-                <h3 className="text-sm font-semibold text-gold-primary">Rechtliches</h3>
-                <ul className="mt-4 space-y-2.5">
-                  <li><a href="/impressum" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Impressum</a></li>
-                  <li><a href="/datenschutz" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Datenschutz</a></li>
-                  <li><a href="/affiliate-hinweis" className="text-sm text-zinc-500 transition-colors hover:text-gold-primary">Affiliate-Hinweis</a></li>
-                </ul>
-              </div>
-            </div>
-
-            {/* Affiliate Disclosure & Copyright */}
-            <div className="mt-10 border-t border-gold-accent/30 pt-8">
-              <p className="text-xs leading-relaxed text-zinc-600">
-                {AFFILIATE_DISCLOSURE_TEXT}
-              </p>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
-                <p className="text-xs text-zinc-600">
-                  &copy; {SEO_CONFIG.currentYear} BudgetScout.de – Alle Rechte vorbehalten.
-                </p>
-                <p className="text-xs text-zinc-700">
-                  Mit ❤️ in Deutschland gemacht
-                </p>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </body>
     </html>
   )

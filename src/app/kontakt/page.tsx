@@ -56,10 +56,10 @@ export default function KontaktPage() {
                                     Für allgemeine Anfragen:
                                 </p>
                                 <a
-                                    href="mailto:info@budgetscout.de"
+                                    href="mailto:Oezhanfatih@gmail.com"
                                     className="mt-1 inline-block text-sm font-semibold text-gold-primary transition-colors hover:text-gold-primary/80"
                                 >
-                                    info@budgetscout.de
+                                    Oezhanfatih@gmail.com
                                 </a>
                             </div>
 
@@ -72,10 +72,10 @@ export default function KontaktPage() {
                                     Angebot? Schreib uns an:
                                 </p>
                                 <a
-                                    href="mailto:partner@budgetscout.de"
+                                    href="mailto:Oezhanfatih@gmail.com"
                                     className="mt-1 inline-block text-sm font-semibold text-gold-primary transition-colors hover:text-gold-primary/80"
                                 >
-                                    partner@budgetscout.de
+                                    Oezhanfatih@gmail.com
                                 </a>
                             </div>
 

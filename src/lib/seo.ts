@@ -41,12 +41,12 @@ export const SEO_CONFIG = {
         logo: "https://budgetscout.de/images/logo.png",
         description: "Unabhängiges Vergleichsportal für Kfz-Versicherung, Strom, DSL, Kredite und Krankenversicherung.",
         address: {
-            street: "Musterstraße 123",
-            locality: "Berlin",
-            postalCode: "10115",
+            street: "Obere Firstalm 1",
+            locality: "Schliersee",
+            postalCode: "83727",
             country: "DE",
         },
-        contactEmail: "info@budgetscout.de",
+        contactEmail: "Oezhanfatih@gmail.com",
         foundingDate: "2024-01-01",
     },
     /** Google Search Console verification */
