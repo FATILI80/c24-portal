@@ -635,6 +635,18 @@ export default function DatenschutzPage() {
                                 </a>
                                 .
                             </p>
+                            <p>
+                                Unsere Werbe- und Sparhinweise kannst Du dauerhaft
+                                ausblenden. Dabei speichern wir eine rein lokale
+                                Präferenz in Deinem Browser (localStorage-Schlüssel{" "}
+                                <em>budgetscout-amazon-bar-dismissed</em> und{" "}
+                                <em>budgetscout-amazon-sticky-dismissed</em>). Diese
+                                Angabe verbleibt auf Deinem Gerät, wird nicht an uns oder
+                                Dritte übertragen und enthält keine personenbezogenen
+                                Daten. Du kannst sie jederzeit über die Einstellungen
+                                Deines Browsers löschen – die Hinweise erscheinen dann
+                                wieder.
+                            </p>
                         </LegalSection>
 
                         {/* 8 — Kontakt */}
