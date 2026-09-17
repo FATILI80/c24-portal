@@ -108,6 +108,11 @@ export default function AffiliateHinweisPage() {
                                         desc: "Marketplace für digitale Produkte wie Kurse, E-Books und Software.",
                                         url: "https://www.digistore24.com/",
                                     },
+                                    {
+                                        name: "Amazon Partnerprogramm",
+                                        desc: "Amazon.de: Bei Käufen über unsere als „Anzeige“ gekennzeichneten Spar-Gadget-Empfehlungen erhalten wir eine Provision – für Dich ohne Aufpreis.",
+                                        url: "https://www.amazon.de/",
+                                    },
                                 ].map((partner, i) => (
                                     <li
                                         key={i}
@@ -149,6 +154,11 @@ export default function AffiliateHinweisPage() {
                                 <li>
                                     Links zu CHECK24-Vergleichen sind als solche
                                     erkennbar und führen Dich zur CHECK24-Website.
+                                </li>
+                                <li>
+                                    Amazon-Produktempfehlungen sind als „Anzeige“
+                                    gekennzeichnet und enthalten einen
+                                    Partnerlink zum Amazon-Partnerprogramm.
                                 </li>
                                 <li>
                                     Digistore24-Produkte sind mit dem Hinweis

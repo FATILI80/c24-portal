@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { SEO_CONFIG, generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { AFFILIATE_DISCLOSURE_TEXT, generateAffiliateLink } from "@/lib/affiliate-links"
+import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 import type { Breadcrumb } from "@/types/affiliate"
 
 const SLUG = "ratgeber/stromanbieter-vergleich"
@@ -348,6 +349,13 @@ export default function StromanbieterVergleichPage() {
                     </p>
                 </section>
             </article>
+
+            {/* Amazon-Spargadget (Anzeige) – passt zum Stromwechsel */}
+            <AmazonInlineBanner
+                categorySlug="strom-gas"
+                subid="ratgeber-strom-wechseln-inline"
+                headline="Stromfresser im Haushalt entlarven"
+            />
 
             {/* Final CTA */}
             <div className="mt-10 rounded-xl border border-gold-accent/40 bg-gradient-to-r from-surface via-holz-dark/50 to-surface p-6 text-center">

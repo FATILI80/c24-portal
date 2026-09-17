@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import DigistoreDeals from "@/components/affiliate/DigistoreDeals"
+import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 import { SEO_CONFIG, generatePageMetadata, buildSEOData } from "@/lib/seo"
 
 // ─── Supported Category Routes ────────────────────────────────────────────
@@ -105,6 +106,14 @@ export default async function DealCategoryPage({ params }: Props) {
                     </div>
                 </div>
             </section>
+
+            {/* ─── Amazon-Spargadget (Anzeige) ──────────────────────────── */}
+            <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+                <AmazonInlineBanner
+                    subid={`deals-${category}-inline`}
+                    headline="Deine Finanzen im Griff behalten"
+                />
+            </div>
 
             {/* ─── Digistore24 Products ──────────────────────────────────── */}
             <DigistoreDeals showFilters={false} />

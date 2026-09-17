@@ -7,6 +7,8 @@ import { initCategories } from "@/lib/categories-index"
 import { initBlogPosts } from "@/lib/blog-posts"
 import { AFFILIATE_DISCLOSURE_TEXT } from "@/lib/affiliate-links"
 import Footer from "@/components/layout/Footer"
+import AmazonDealBar from "@/components/affiliate/AmazonDealBar"
+import AmazonStickyBanner from "@/components/affiliate/AmazonStickyBanner"
 
 // Initialize all categories and blog posts on app load
 initCategories()
@@ -206,10 +208,16 @@ export default function RootLayout({
           </nav>
         </header>
 
+        {/* ─── Amazon-Partner-Banner (auf jeder Route) ─────────────────── */}
+        <AmazonDealBar />
+
         {/* ─── Main Content ─────────────────────────────────────────────── */}
         <main id="main-content" className="flex-1">
           {children}
         </main>
+
+        {/* ─── Mobiler Amazon-CTA (Unterseiten) ────────────────────────── */}
+        <AmazonStickyBanner />
 
         {/* ─── Footer ───────────────────────────────────────────────────── */}
         <Footer />

@@ -5,6 +5,7 @@ import { getBlogPostBySlug, getRelatedBlogPosts, getCategoryBySlug } from "@/lib
 import { generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { generateAffiliateLink } from "@/lib/affiliate-links"
 import AffiliateLink from "@/components/affiliate/AffiliateLink"
+import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 
 interface BlogPostProps {
     params: Promise<{ slug: string }>
@@ -153,6 +154,9 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
                     </p>
                 )}
             </article>
+
+            {/* Amazon-Spargadget (Anzeige) */}
+            <AmazonInlineBanner subid={`blog-${slug}-inline`} />
 
             {/* Related Posts */}
             {relatedPosts.length > 0 && (

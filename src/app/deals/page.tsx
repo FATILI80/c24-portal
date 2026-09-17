@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import DigistoreDeals from "@/components/affiliate/DigistoreDeals"
+import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 import { SEO_CONFIG, generatePageMetadata, buildSEOData } from "@/lib/seo"
 
 export const metadata: Metadata = generatePageMetadata(
@@ -47,6 +48,14 @@ export default function DealsPage() {
             </section>
 
             {/* ─── Digistore24 Deals ──────────────────────────────────────── */}
+            {/* ─── Amazon-Spargadget (Anzeige) ───────────────────────────── */}
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <AmazonInlineBanner
+                    subid="deals-uebersicht-inline"
+                    headline="Budget-Planer für Deine Sparziele"
+                />
+            </div>
+
             <DigistoreDeals showFilters={false} />
         </div>
     )

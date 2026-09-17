@@ -421,3 +421,76 @@ export const AFFILIATE_DISCLOSURE_SHORT =
 export function getDeepLinkConfig(categorySlug: Slug): DeepLinkConfig | null {
     return CATEGORY_DEEP_LINKS[categorySlug] ?? null
 }
+
+// ─── Amazon PartnerNet ─────────────────────────────────────────────────────
+//
+// Amazon-Links werden über den Partner-Tag (`tag=...`) zugeordnet. Der Tag
+// lässt sich über die Umgebungsvariable `NEXT_PUBLIC_AMAZON_TAG` steuern und
+// fällt auf den im PartnerNet hinterlegten Standard-Tag zurück, damit die
+// Links auch ohne zusätzliche Vercel-Konfiguration sofort funktionieren.
+
+/** Amazon-Partner-Tag (Tracking-ID des PartnerNet-Kontos) */
+export const AMAZON_AFFILIATE_TAG =
+    process.env.NEXT_PUBLIC_AMAZON_TAG || "bb8ozi04-21"
+
+/** Deutscher Amazon-Store */
+export const AMAZON_BASE_DOMAIN = "www.amazon.de"
+
+/** ASINs sind immer genau 10 alphanumerische Zeichen */
+export const AMAZON_ASIN_PATTERN = /^[A-Z0-9]{10}$/
+
+/** Prüft, ob ein String wie eine gültige ASIN aussieht. */
+export function isValidAsin(asin: string): boolean {
+    return AMAZON_ASIN_PATTERN.test((asin || "").trim().toUpperCase())
+}
+
+/**
+ * Erzeugt einen Amazon-Affiliate-Produktlink im deutschen Store.
+ *
+ * @param asin  Amazon-Standardnummer des Produkts (z. B. "B0DLJYZFR6")
+ * @param subid Optionale Sub-ID (`ascsubtag`) zur Auswertung im PartnerNet,
+ *              z. B. "startseite-top-produkte-strommessgeraet"
+ *
+ * @example
+ * generateAmazonLink("B0DLJYZFR6")
+ * // => "https://www.amazon.de/dp/B0DLJYZFR6/?tag=bb8ozi04-21"
+ */
+export function generateAmazonLink(asin: string, subid?: string): string {
+    const normalized = (asin || "").trim().toUpperCase()
+    const searchParams = new URLSearchParams()
+    searchParams.set("tag", AMAZON_AFFILIATE_TAG)
+    if (subid) searchParams.set("ascsubtag", subid)
+    return `https://${AMAZON_BASE_DOMAIN}/dp/${normalized}/?${searchParams.toString()}`
+}
+
+/**
+ * Erzeugt einen Amazon-Affiliate-Suchlink. Sinnvoll als Rückfalloption, wenn
+ * ein Produkt ausgelistet wurde oder ein Preisvergleich gewünscht ist.
+ */
+export function generateAmazonSearchLink(query: string, subid?: string): string {
+    const searchParams = new URLSearchParams()
+    searchParams.set("k", (query || "").trim())
+    searchParams.set("tag", AMAZON_AFFILIATE_TAG)
+    if (subid) searchParams.set("ascsubtag", subid)
+    return `https://${AMAZON_BASE_DOMAIN}/s?${searchParams.toString()}`
+}
+
+/** Standard-Attribute für Amazon-Links (SEO-konform, neuer Tab). */
+export function getAmazonLinkAttributes(): Record<string, string> {
+    return {
+        target: "_blank",
+        rel: "sponsored nofollow noopener noreferrer",
+    }
+}
+
+/** Kompakter Werbehinweis für Produktkarten und Banner. */
+export const AMAZON_DISCLOSURE_SHORT =
+    "Anzeige / Partnerlink: Beim Kauf über diesen Link erhalten wir eine " +
+    "Provision vom Amazon-Partnerprogramm – für Dich bleibt der Preis gleich."
+
+/** Ausführlicher Hinweis für Datenschutz-nahe Bereiche und Fußzeilen. */
+export const AMAZON_DISCLOSURE_TEXT =
+    "Als Amazon-Partner verdienen wir an qualifizierten Verkäufen. Die " +
+    "Empfehlungen sind redaktionell ausgewählt, Preise und Verfügbarkeit " +
+    "kannst Du direkt bei Amazon prüfen. Für Dich entstehen keine " +
+    "Mehrkosten, der Kaufpreis ändert sich nicht."

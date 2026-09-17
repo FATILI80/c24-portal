@@ -1,6 +1,15 @@
 import Link from "next/link"
-import { AFFILIATE_DISCLOSURE_TEXT } from "@/lib/affiliate-links"
+import {
+    AFFILIATE_DISCLOSURE_TEXT,
+    AMAZON_DISCLOSURE_SHORT,
+} from "@/lib/affiliate-links"
 import { SEO_CONFIG } from "@/lib/seo"
+import {
+    AMAZON_PRODUCT_BUDGET_PLANNER,
+    AMAZON_PRODUCT_ENERGY_METER,
+    AMAZON_PRODUCT_THERMOSTAT,
+    getAmazonProductUrl,
+} from "@/lib/amazon-products"
 
 // ─── Link Data ─────────────────────────────────────────────────────────────
 
@@ -31,6 +40,35 @@ const LEGAL_LINKS = [
     { href: "/affiliate-hinweis", label: "Affiliate-Hinweis" },
 ] as const
 
+/**
+ * Kuratierte Amazon-Spargadgets. Diese Links stehen über die im Root-Layout
+ * eingebundene Fußzeile auf jeder Seite zur Verfügung – inklusive aller
+ * Untermenüs (Vergleiche, Ratgeber, Blog, Deals und Rechtstexte).
+ */
+const AMAZON_GADGET_LINKS = [
+    {
+        label: "Energiekosten-Messgerät",
+        href: getAmazonProductUrl(
+            AMAZON_PRODUCT_ENERGY_METER,
+            "footer-energiekosten-messgeraet"
+        ),
+    },
+    {
+        label: "Smartes Heizkörperthermostat",
+        href: getAmazonProductUrl(
+            AMAZON_PRODUCT_THERMOSTAT,
+            "footer-smart-thermostat"
+        ),
+    },
+    {
+        label: "Budget-Planer (Haushaltsbuch)",
+        href: getAmazonProductUrl(
+            AMAZON_PRODUCT_BUDGET_PLANNER,
+            "footer-budget-planer"
+        ),
+    },
+] as const
+
 // ─── Shared Class Names ────────────────────────────────────────────────────
 
 const COLUMN_HEADING_CLASS = "text-sm font-semibold text-gold-primary"
@@ -47,7 +85,7 @@ export default function Footer() {
     return (
         <footer className="border-t border-gold-accent/30 bg-surface">
             <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
                     {/* Brand Column */}
                     <div>
                         <Link href="/" className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
@@ -78,6 +116,28 @@ export default function Footer() {
                                 </li>
                             ))}
                         </ul>
+                    </div>
+
+                    {/* Amazon Spar-Gadgets Column */}
+                    <div>
+                        <h3 className={COLUMN_HEADING_CLASS}>Spar-Gadgets</h3>
+                        <ul className="mt-4 space-y-2.5">
+                            {AMAZON_GADGET_LINKS.map((link) => (
+                                <li key={link.href}>
+                                    <a
+                                        href={link.href}
+                                        target="_blank"
+                                        rel="sponsored nofollow noopener noreferrer"
+                                        className={COLUMN_LINK_CLASS}
+                                    >
+                                        {link.label}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="mt-3 text-[11px] leading-relaxed text-zinc-600">
+                            {AMAZON_DISCLOSURE_SHORT}
+                        </p>
                     </div>
 
                     {/* Service Column */}
@@ -113,6 +173,9 @@ export default function Footer() {
                 <div className="mt-10 border-t border-gold-accent/30 pt-8">
                     <p className="text-xs leading-relaxed text-zinc-600">
                         {AFFILIATE_DISCLOSURE_TEXT}
+                    </p>
+                    <p className="mt-2 text-xs leading-relaxed text-zinc-600">
+                        {AMAZON_DISCLOSURE_SHORT}
                     </p>
                     <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <p className="text-xs text-zinc-600">

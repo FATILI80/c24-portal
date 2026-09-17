@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { generateAffiliateLink, getAffiliateLinkAttributes } from "@/lib/affiliate-links"
+import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 
 const seo = buildSEOData({
     title: "Tagesgeld-Vergleich 2026 – Die besten Zinsen für Dein Geld",
@@ -189,6 +190,13 @@ export default function TagesgeldVergleichPage() {
                                 </a>
                             </div>
                         </div>
+
+                        {/* Amazon-Spargadget (Anzeige) */}
+                        <AmazonInlineBanner
+                            categorySlug="tagesgeld"
+                            subid="ratgeber-tagesgeld-inline"
+                            headline="Erst planen, dann anlegen – mit Budget-Überblick"
+                        />
 
                         {/* FAQ */}
                         <div className="card-base card-holz-border p-6 sm:p-8">

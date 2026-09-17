@@ -11,6 +11,7 @@ import Testimonials from "@/components/home/Testimonials"
 import NewsletterSignup from "@/components/conversion/NewsletterSignup"
 import StickyCta from "@/components/conversion/StickyCta"
 import ExitIntentPopup from "@/components/conversion/ExitIntentPopup"
+import AmazonTopProducts from "@/components/affiliate/AmazonTopProducts"
 
 // ─── CHECK24 Category Config ──────────────────────────────────────────────
 interface Check24Category {
@@ -419,6 +420,14 @@ export default function HomeClient() {
 
             {/* ── Holzquerbalken ────────────────────────────────────────────── */}
             <HolzBalken dark />
+
+            {/* ══════════════════════════════════════════════════════════════════
+            AMAZON SPAR-GADGETS (Anzeige / Partnerlinks)
+            ══════════════════════════════════════════════════════════════════ */}
+            <AmazonTopProducts />
+
+            {/* ── Holzquerbalken ────────────────────────────────────────────── */}
+            <HolzBalken />
 
             {/* ══════════════════════════════════════════════════════════════════
             DIGISTORE24 PRODUKTE

@@ -14,6 +14,7 @@ import {
     AFFILIATE_DISCLOSURE_TEXT,
 } from "@/lib/affiliate-links"
 import ComparisonTable from "@/components/affiliate/ComparisonTable"
+import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 import AffiliateLink from "@/components/affiliate/AffiliateLink"
 
 // ─── Props ─────────────────────────────────────────────────────────────────
@@ -130,6 +131,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     </div>
                 </div>
             </section>
+
+            {/* ─── Amazon Partnerempfehlung (Anzeige) ──────────────────── */}
+            <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+                <AmazonInlineBanner
+                    categorySlug={slug}
+                    subid={`kategorie-${slug}-inline`}
+                />
+            </div>
 
             {/* ─── Comparison Table ───────────────────────────────────── */}
             {comparisonTable && (

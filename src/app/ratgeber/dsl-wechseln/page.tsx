@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { generateAffiliateLink, getAffiliateLinkAttributes } from "@/lib/affiliate-links"
+import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 
 const seo = buildSEOData({
     title: "DSL-Wechseln leicht gemacht – So sparst Du bis zu 240€ im Jahr",
@@ -203,6 +204,13 @@ export default function DslWechselnPage() {
                                 </a>
                             </div>
                         </div>
+
+                        {/* Amazon-Spargadget (Anzeige) */}
+                        <AmazonInlineBanner
+                            categorySlug="dsl-internet"
+                            subid="ratgeber-dsl-wechseln-inline"
+                            headline="Verbrauch von Router & Standby-Geräten senken"
+                        />
 
                         {/* FAQ */}
                         <div className="card-base card-holz-border p-6 sm:p-8">

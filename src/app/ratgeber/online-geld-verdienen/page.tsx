@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { SEO_CONFIG, generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { AFFILIATE_DISCLOSURE_TEXT } from "@/lib/affiliate-links"
+import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 import type { Breadcrumb } from "@/types/affiliate"
 
 const SLUG = "ratgeber/online-geld-verdienen"
@@ -421,6 +422,12 @@ export default function OnlineGeldVerdienenPage() {
             </article>
 
             {/* Affiliate Disclosure */}
+            {/* Amazon-Spargadget (Anzeige) */}
+            <AmazonInlineBanner
+                subid="ratgeber-online-geld-verdienen-inline"
+                headline="Erst Ausgaben senken, dann Einnahmen erhöhen"
+            />
+
             <div className="mt-8 border-t border-gold-accent/20 pt-6">
                 <p className="text-xs leading-relaxed text-zinc-600">{AFFILIATE_DISCLOSURE_TEXT}</p>
             </div>
