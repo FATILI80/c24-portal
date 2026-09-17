@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import DigistoreDeals from "@/components/affiliate/DigistoreDeals"
+import DigistoreBanner from "@/components/affiliate/DigistoreBanner"
 import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 import { SEO_CONFIG, generatePageMetadata, buildSEOData } from "@/lib/seo"
 
@@ -57,6 +57,9 @@ export default function DealsPage() {
             </div>
 
             <DigistoreDeals showFilters={false} />
+
+            {/* ─── Digistore24-Werbebanner (Anzeige) ──────────────────────── */}
+            <DigistoreBanner placement="deals" limit={3} />
         </div>
     )
 }

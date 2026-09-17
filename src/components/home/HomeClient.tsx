@@ -12,6 +12,7 @@ import NewsletterSignup from "@/components/conversion/NewsletterSignup"
 import StickyCta from "@/components/conversion/StickyCta"
 import ExitIntentPopup from "@/components/conversion/ExitIntentPopup"
 import AmazonTopProducts from "@/components/affiliate/AmazonTopProducts"
+import DigistoreBanner from "@/components/affiliate/DigistoreBanner"
 
 // ─── CHECK24 Category Config ──────────────────────────────────────────────
 interface Check24Category {
@@ -473,7 +474,7 @@ export default function HomeClient() {
                                 key={i}
                                 href={product.link}
                                 target="_blank"
-                                rel="noopener noreferrer nofollow"
+                                rel="sponsored nofollow noopener noreferrer"
                                 className="card-base card-holz-border group flex flex-col p-6"
                                 onClick={() => handleProductClick(product)}
                             >
@@ -499,6 +500,16 @@ export default function HomeClient() {
                                 </span>
                             </a>
                         ))}
+                    </div>
+
+                    {/* ── Digistore24-Werbebanner (Anzeige) ─────────────────────── */}
+                    <div className="mt-10">
+                        <DigistoreBanner
+                            placement="home"
+                            limit={3}
+                            title="Spar-Ratgeber zum Sofort-Start"
+                            className="!py-0"
+                        />
                     </div>
 
                     {/* If filter yields no results */}

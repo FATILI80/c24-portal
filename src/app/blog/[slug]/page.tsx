@@ -6,6 +6,7 @@ import { generatePageMetadata, buildSEOData, generateArticleSchema, generateBrea
 import { generateAffiliateLink } from "@/lib/affiliate-links"
 import AffiliateLink from "@/components/affiliate/AffiliateLink"
 import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
+import { DigistoreInlineBanner } from "@/components/affiliate/DigistoreBanner"
 
 interface BlogPostProps {
     params: Promise<{ slug: string }>
@@ -157,6 +158,7 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
 
             {/* Amazon-Spargadget (Anzeige) */}
             <AmazonInlineBanner subid={`blog-${slug}-inline`} />
+            <DigistoreInlineBanner subid={`blog-${slug}-digistore`} />
 
             {/* Related Posts */}
             {relatedPosts.length > 0 && (

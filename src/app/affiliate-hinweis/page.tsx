@@ -161,8 +161,10 @@ export default function AffiliateHinweisPage() {
                                     Partnerlink zum Amazon-Partnerprogramm.
                                 </li>
                                 <li>
-                                    Digistore24-Produkte sind mit dem Hinweis
-                                    "Empfohlen" gekennzeichnet.
+                                    Digistore24-Angebote und -Werbebanner sind als
+                                    „Anzeige · Digistore24-Partner“ gekennzeichnet
+                                    und enthalten einen Partnerlink mit unserer
+                                    Affiliate-ID.
                                 </li>
                                 <li>
                                     In Ratgeber-Artikeln weisen wir gesondert auf

@@ -3,6 +3,7 @@ import Link from "next/link"
 import { generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { generateAffiliateLink, getAffiliateLinkAttributes } from "@/lib/affiliate-links"
 import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
+import { DigistoreInlineBanner } from "@/components/affiliate/DigistoreBanner"
 
 const seo = buildSEOData({
     title: "Kreditkarten-Vergleich 2026 – Die besten Karten ohne Jahresgebühr",
@@ -205,6 +206,10 @@ export default function KreditkartenVergleichPage() {
                             categorySlug="kreditkarten"
                             subid="ratgeber-kreditkarten-inline"
                             headline="Haushaltsbudget mit Planer im Griff"
+                        />
+                        <DigistoreInlineBanner
+                            categorySlug="kreditkarten"
+                            subid="ratgeber-kreditkarten-digistore"
                         />
 
                         {/* FAQ */}

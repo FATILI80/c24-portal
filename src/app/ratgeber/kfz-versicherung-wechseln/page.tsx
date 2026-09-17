@@ -3,6 +3,7 @@ import Link from "next/link"
 import { SEO_CONFIG, generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { AFFILIATE_DISCLOSURE_TEXT, generateAffiliateLink } from "@/lib/affiliate-links"
 import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
+import { DigistoreInlineBanner } from "@/components/affiliate/DigistoreBanner"
 import type { Breadcrumb } from "@/types/affiliate"
 
 const SLUG = "ratgeber/kfz-versicherung-wechseln"
@@ -434,6 +435,10 @@ export default function KfzVersicherungWechselnPage() {
                 categorySlug="kfz-versicherung"
                 subid="ratgeber-kfz-wechseln-inline"
                 headline="Fixkosten im Blick – Budget-Planer nutzen"
+            />
+            <DigistoreInlineBanner
+                categorySlug="kfz-versicherung"
+                subid="ratgeber-kfz-wechseln-digistore"
             />
 
             {/* Final CTA */}

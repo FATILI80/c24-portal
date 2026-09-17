@@ -15,6 +15,7 @@ import {
 } from "@/lib/affiliate-links"
 import ComparisonTable from "@/components/affiliate/ComparisonTable"
 import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
+import { DigistoreInlineBanner } from "@/components/affiliate/DigistoreBanner"
 import AffiliateLink from "@/components/affiliate/AffiliateLink"
 
 // ─── Props ─────────────────────────────────────────────────────────────────
@@ -137,6 +138,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 <AmazonInlineBanner
                     categorySlug={slug}
                     subid={`kategorie-${slug}-inline`}
+                />
+                <DigistoreInlineBanner
+                    categorySlug={slug}
+                    subid={`kategorie-${slug}-digistore`}
                 />
             </div>
 

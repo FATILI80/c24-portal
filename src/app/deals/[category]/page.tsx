@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import DigistoreDeals from "@/components/affiliate/DigistoreDeals"
+import DigistoreBanner from "@/components/affiliate/DigistoreBanner"
 import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
 import { SEO_CONFIG, generatePageMetadata, buildSEOData } from "@/lib/seo"
 
@@ -114,6 +115,9 @@ export default async function DealCategoryPage({ params }: Props) {
                     headline="Deine Finanzen im Griff behalten"
                 />
             </div>
+
+            {/* ─── Digistore24-Werbebanner (Anzeige) ────────────────────── */}
+            <DigistoreBanner placement="deals" limit={2} />
 
             {/* ─── Digistore24 Products ──────────────────────────────────── */}
             <DigistoreDeals showFilters={false} />

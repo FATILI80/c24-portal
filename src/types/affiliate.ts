@@ -449,28 +449,30 @@ export interface Digistore24Product {
     title: string
     /** Short description */
     description: string
-    /** Product image URL */
-    imageUrl: string
-    /** Sale price (€) */
-    price: number
+    /** Product image URL (optional – Empfehlungen nutzen Emoji statt Fremdbilder) */
+    imageUrl?: string
+    /** Sale price (€) – optional, Preise werden direkt beim Anbieter geprüft */
+    price?: number
     /** Original price (€) if discounted */
     originalPrice?: number
     /** Currency */
     currency: "EUR"
-    /** Commission percentage (e.g. 50 = 50%) */
-    commissionPercent: number
+    /** Commission percentage (e.g. 50 = 50%) – interne Kennzahl */
+    commissionPercent?: number
     /** Digistore24 affiliate URL */
     affiliateUrl: URLString
     /** Product category */
     category: Digistore24Category
     /** Customer rating (1-5) */
-    rating: number
+    rating?: number
     /** Vendor/author name */
-    vendor: string
+    vendor?: string
     /** Badge text (e.g. "Bestseller", "Neu", "-40%") */
     badge?: string
     /** Short tagline for cards */
     tagline?: string
+    /** Emoji als Bildersatz */
+    icon?: string
 }
 
 /** Amazon tech product categories */

@@ -3,6 +3,11 @@ import Link from "next/link"
 import { SEO_CONFIG, generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { AFFILIATE_DISCLOSURE_TEXT } from "@/lib/affiliate-links"
 import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
+import { DigistoreInlineBanner } from "@/components/affiliate/DigistoreBanner"
+import {
+    getDigistoreOfferUrl,
+    pickDigistoreOffer,
+} from "@/lib/digistore-products"
 import type { Breadcrumb } from "@/types/affiliate"
 
 const SLUG = "ratgeber/online-geld-verdienen"
@@ -51,9 +56,16 @@ const articleSchema = generateArticleSchema(
 export default function OnlineGeldVerdienenPage() {
     const today = SEO_CONFIG.currentYear
 
-    // Direct affiliate links (Digistore24 and CHECK24)
-    const affiliateLink = "https://www.digistore24.com/redir/434104/Bb8ozi/"
-    const socialMediaCourse = "https://franke-akademie.de/met-gluecksformel-instagram#aff=Bb8ozi"
+    // Affiliate-Links kommen aus der zentralen Digistore24-Konfiguration,
+    // damit die Affiliate-ID nur an einer Stelle gepflegt werden muss.
+    const affiliateLink = getDigistoreOfferUrl(
+        pickDigistoreOffer("finanziell-freier"),
+        "ratgeber-online-geld-verdienen"
+    )
+    const socialMediaCourse = getDigistoreOfferUrl(
+        pickDigistoreOffer("social-media-nebeneinkommen"),
+        "ratgeber-online-geld-verdienen-social"
+    )
     const check24Kredit = `https://www.check24.de/kredit/?affiliate=${process.env.NEXT_PUBLIC_CHECK24_PARTNER_ID || "126378"}&subid=ratgeber-online-geld`
 
     return (
@@ -204,7 +216,7 @@ export default function OnlineGeldVerdienenPage() {
 
                     <h3 className="mt-6 mb-3 text-xl font-semibold text-gold-primary/90">Beliebte digitale Produkte {today}</h3>
                     <ul className="ml-6 list-disc space-y-2 text-zinc-300">
-                        <li><strong>E-Books & Ratgeber</strong> – z.B. "Spar-Tricks im Haushalt" oder "Kfz-Versicherung optimal wählen"</li>
+                        <li><strong>E-Books & Ratgeber</strong> – z.B. „Spar-Tricks im Haushalt“ oder „Kfz-Versicherung optimal wählen“</li>
                         <li><strong>Online-Kurse</strong> – Video-Tutorials zu SEO, Excel, Social Media</li>
                         <li><strong>Vorlagen & Printables</strong> – Budgetplaner, Wochenpläne, Hochzeitsplaner</li>
                         <li><strong>Software-Tools</strong> – Kleine Anwendungen für Nischenprobleme</li>
@@ -233,7 +245,7 @@ export default function OnlineGeldVerdienenPage() {
                     <div className="mt-6 rounded-xl border border-holz-medium/40 bg-holz-very-dark/50 p-5">
                         <p className="text-sm text-zinc-400">
                             <strong className="text-gold-primary">💡 Tipp für {today}:</strong> Der Trend geht zu
-                            <strong className="text-gold-primary"> "Edutainment"</strong> – Unterhaltung mit Bildungsinhalt.
+                            <strong className="text-gold-primary"> „Edutainment“</strong> – Unterhaltung mit Bildungsinhalt.
                             Kanäle zu Finanzen, Sparen, Produktivität und persönlicher Entwicklung wachsen besonders stark.
                         </p>
                     </div>
@@ -409,7 +421,7 @@ export default function OnlineGeldVerdienenPage() {
                             Content-Erstellung</strong> – so bauen Sie langfristig ein passives Einkommen auf.
                     </p>
                     <p className="mt-3">
-                        Wichtig: Seien Sie skeptisch bei Angeboten, die "schnelles Geld" versprechen. Seriöses Online-Einkommen
+                        Wichtig: Seien Sie skeptisch bei Angeboten, die „schnelles Geld“ versprechen. Seriöses Online-Einkommen
                         erfordert <strong className="text-gold-primary">Zeit, Geduld und kontinuierliche Arbeit</strong>.
                         Aber die Belohnung ist es wert: finanzielle Freiheit, flexible Arbeitszeiten
                         und die Möglichkeit, von überall auf der Welt zu arbeiten.
@@ -426,6 +438,10 @@ export default function OnlineGeldVerdienenPage() {
             <AmazonInlineBanner
                 subid="ratgeber-online-geld-verdienen-inline"
                 headline="Erst Ausgaben senken, dann Einnahmen erhöhen"
+            />
+            <DigistoreInlineBanner
+                categorySlug="online-business"
+                subid="ratgeber-online-geld-verdienen-digistore"
             />
 
             <div className="mt-8 border-t border-gold-accent/20 pt-6">

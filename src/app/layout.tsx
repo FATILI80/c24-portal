@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
@@ -7,6 +8,7 @@ import { initCategories } from "@/lib/categories-index"
 import { initBlogPosts } from "@/lib/blog-posts"
 import { AFFILIATE_DISCLOSURE_TEXT } from "@/lib/affiliate-links"
 import Footer from "@/components/layout/Footer"
+import AdBannerDuo from "@/components/affiliate/AdBannerDuo"
 import AmazonDealBar from "@/components/affiliate/AmazonDealBar"
 import AmazonStickyBanner from "@/components/affiliate/AmazonStickyBanner"
 
@@ -159,30 +161,30 @@ export default function RootLayout({
         {/* ─── Header / Navigation ─────────────────────────────────────── */}
         <header className="sticky top-0 z-40 w-full border-b border-gold-accent/40 bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/80">
           <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-            <a href="/" className="flex items-center gap-1.5 text-xl font-extrabold tracking-tight">
+            <Link href="/" className="flex items-center gap-1.5 text-xl font-extrabold tracking-tight">
               <span className="text-gold-primary">Budget</span>
               <span className="text-text-primary">Scout</span>
               <span className="text-xs font-normal text-zinc-500 ml-1">.de</span>
-            </a>
+            </Link>
             <div className="hidden md:flex md:items-center md:gap-8">
-              <a
+              <Link
                 href="/#check24-vergleiche"
                 className="text-sm font-medium text-zinc-400 transition-colors hover:text-gold-primary"
               >
                 Vergleiche
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#digistore-deals"
                 className="text-sm font-medium text-zinc-400 transition-colors hover:text-gold-primary"
               >
                 Deals
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#ratgeber"
                 className="text-sm font-medium text-zinc-400 transition-colors hover:text-gold-primary"
               >
                 Ratgeber
-              </a>
+              </Link>
               <a
                 href="/ueber-uns"
                 className="text-sm font-medium text-zinc-400 transition-colors hover:text-gold-primary"
@@ -218,6 +220,9 @@ export default function RootLayout({
 
         {/* ─── Mobiler Amazon-CTA (Unterseiten) ────────────────────────── */}
         <AmazonStickyBanner />
+
+        {/* ─── Werbebanner: Digistore24 + Amazon (auf jeder Route) ─────── */}
+        <AdBannerDuo />
 
         {/* ─── Footer ───────────────────────────────────────────────────── */}
         <Footer />

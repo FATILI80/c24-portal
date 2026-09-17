@@ -1,161 +1,123 @@
 "use client"
 
-import { useState } from "react"
-import type { Digistore24Product, Digistore24Category } from "@/types/affiliate"
-import {
-    ALL_DIGISTORE24_PRODUCTS,
-    getDigistore24ByCategory,
-    getFeaturedDigistore24,
-    DIGISTORE24_CATEGORY_LABELS,
-} from "@/lib/sample-digistore24"
+// ============================================================================
+// Digistore24 Deals — Angebots-Raster mit Partnerlinks
+// ============================================================================
+// Alle Links stammen aus `@/lib/digistore-products` und sind mit der
+// Digistore24-Affiliate-ID des Betreibers verknüpft. Bewusst ohne Preis- und
+// Provisionsangaben: beides ändert sich laufend und wird direkt beim Anbieter
+// geprüft. Keine Fremdbilder – jedes Angebot nutzt ein Emoji.
+// ============================================================================
 
-// ─── Category Configuration ───────────────────────────────────────────────
+import { useState } from "react"
+import {
+    DIGISTORE_CATEGORY_LABELS,
+    DIGISTORE_DISCLOSURE_SHORT,
+    DIGISTORE_OFFERS,
+    getDigistoreLinkAttributes,
+    getDigistoreOfferUrl,
+    getDigistoreOffersByCategory,
+    type DigistoreOffer,
+    type DigistoreOfferCategory,
+} from "@/lib/digistore-products"
+
+// ─── Filter-Kategorien ─────────────────────────────────────────────────────
 
 const CATEGORIES: {
-    key: Digistore24Category | "all"
+    key: DigistoreOfferCategory | "all"
     label: string
     icon: string
 }[] = [
-        { key: "all", label: "Alle", icon: "📦" },
-        { key: "ebook", label: "E-Books", icon: "📚" },
-        { key: "course", label: "Kurse", icon: "🎓" },
-        { key: "template", label: "Vorlagen", icon: "📑" },
-    ]
+    { key: "all", label: "Alle", icon: "📦" },
+    { key: "finanzen", label: "Finanzen", icon: "💰" },
+    { key: "online-business", label: "Online Business", icon: "💻" },
+    { key: "gesundheit", label: "Gesundheit", icon: "💚" },
+    { key: "vorsorge", label: "Vorsorge", icon: "🛡️" },
+    { key: "haushalt", label: "Haushalt", icon: "🏠" },
+]
 
-// ─── Helper ───────────────────────────────────────────────────────────────
+// ─── Angebotskarte ─────────────────────────────────────────────────────────
 
-function formatPrice(price: number): string {
-    return price.toLocaleString("de-DE", {
-        style: "currency",
-        currency: "EUR",
-    })
-}
-
-function renderStars(rating: number): string {
-    const full = Math.floor(rating)
-    const half = rating - full >= 0.5 ? 1 : 0
-    return "★".repeat(full) + (half ? "½" : "") + "☆".repeat(5 - full - half)
-}
-
-// ─── Product Card ─────────────────────────────────────────────────────────
-
-function DigistoreProductCard({ product }: { product: Digistore24Product }) {
-    const [imgError, setImgError] = useState(false)
+function DigistoreOfferCard({
+    offer,
+    subid,
+}: {
+    offer: DigistoreOffer
+    subid: string
+}) {
+    const href = getDigistoreOfferUrl(offer, subid)
+    const label = DIGISTORE_CATEGORY_LABELS[offer.category]
 
     return (
         <a
-            href={product.affiliateUrl}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-            className="group relative flex flex-col overflow-hidden rounded-xl border border-gold-accent bg-gold-dark/40 transition-all duration-300 hover:border-gold-primary/50 hover:shadow-gold-glow-lg hover:-translate-y-1"
+            href={href}
+            {...getDigistoreLinkAttributes()}
+            data-subid={subid}
+            className="card-base card-holz-border group flex flex-col p-6"
         >
-            {/* Badges */}
-            <div className="absolute left-3 top-3 z-10 flex flex-col gap-1">
-                {product.badge && (
-                    <span className="rounded-full bg-gradient-to-r from-gold-primary to-yellow-600 px-3 py-1 text-xs font-bold text-gold-dark shadow-sm">
-                        {product.badge}
-                    </span>
-                )}
-                <span className="rounded-full bg-gold-primary px-3 py-1 text-xs font-bold text-gold-dark shadow-sm">
-                    {product.commissionPercent}% Provision
+            {/* Kennzeichnungspflicht: Werbung sichtbar am Angebot */}
+            <div className="flex items-center justify-between gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gold-primary/15 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-gold-primary">
+                    Anzeige
+                </span>
+                <span className="text-[11px] font-medium text-zinc-500">
+                    Digistore24-Partner
                 </span>
             </div>
 
-            {/* Image placeholder */}
-            <div className="flex h-40 items-center justify-center bg-gradient-to-br from-gold-dark to-gold-accent">
-                {imgError ? (
-                    <span className="text-5xl opacity-30">
-                        {product.category === "ebook"
-                            ? "📚"
-                            : product.category === "course"
-                                ? "🎓"
-                                : product.category === "software"
-                                    ? "⚙️"
-                                    : "📑"}
-                    </span>
-                ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                        src={product.imageUrl}
-                        alt={product.title}
-                        className="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
-                        onError={() => setImgError(true)}
-                    />
-                )}
-            </div>
-
-            {/* Content */}
-            <div className="flex flex-1 flex-col p-4">
-                {/* Category tag */}
-                <span className="text-xs font-medium text-gold-primary">
-                    {DIGISTORE24_CATEGORY_LABELS[product.category]?.icon}{" "}
-                    {DIGISTORE24_CATEGORY_LABELS[product.category]?.label}
+            <div className="mt-4 flex items-start gap-4">
+                <span
+                    aria-hidden="true"
+                    className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-holz-dark text-2xl transition-transform duration-300 group-hover:scale-110"
+                >
+                    {offer.icon}
                 </span>
-
-                <h3 className="mt-1 text-sm font-semibold leading-tight text-text-primary line-clamp-2">
-                    {product.title}
-                </h3>
-
-                {/* Tagline */}
-                {product.tagline && (
-                    <p className="mt-1 text-xs italic text-zinc-400">
-                        {product.tagline}
-                    </p>
-                )}
-
-                {/* Description */}
-                <p className="mt-2 text-xs leading-relaxed text-zinc-400 line-clamp-2">
-                    {product.description}
-                </p>
-
-                {/* Rating */}
-                <div className="mt-2 flex items-center gap-1.5">
-                    <span className="text-xs text-gold-primary">
-                        {renderStars(product.rating)}
-                    </span>
-                    <span className="text-xs text-zinc-400">{product.vendor}</span>
-                </div>
-
-                {/* Spacer */}
-                <div className="flex-1" />
-
-                {/* Price */}
-                <div className="mt-3 flex items-baseline gap-2">
-                    <span className="text-xl font-bold text-text-primary">
-                        {formatPrice(product.price)}
-                    </span>
-                    {product.originalPrice &&
-                        product.originalPrice > product.price && (
-                            <span className="text-sm text-zinc-400 line-through">
-                                {formatPrice(product.originalPrice)}
-                            </span>
-                        )}
-                </div>
-
-                {/* Commission hint */}
-                <p className="mt-1 text-xs text-gold-primary">
-                    Bis zu {formatPrice(product.price * (product.commissionPercent / 100))}{" "}
-                    Provision pro Verkauf
-                </p>
-
-                {/* CTA */}
-                <div className="mt-2 flex items-center gap-1 text-sm font-semibold text-gold-primary transition-all group-hover:gap-2">
-                    <span>Zum Produkt</span>
-                    <span>→</span>
+                <div className="min-w-0">
+                    {offer.badge && (
+                        <span className="inline-flex rounded-full bg-gold-primary/10 px-2.5 py-0.5 text-xs font-bold text-gold-primary">
+                            {offer.badge}
+                        </span>
+                    )}
+                    <h3 className="mt-1.5 text-base font-bold leading-snug text-text-primary">
+                        {offer.name}
+                    </h3>
                 </div>
             </div>
+
+            <p className="mt-3 text-sm font-semibold text-gold-primary/90">
+                {offer.claim}
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                {offer.description}
+            </p>
+
+            <div className="flex-1" />
+
+            <span className="mt-4 inline-flex self-start rounded-full bg-holz-dark/60 px-2.5 py-0.5 text-xs font-medium text-zinc-400">
+                {label.icon} {label.label}
+            </span>
+
+            <span className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-gold-primary transition-all group-hover:gap-2">
+                Angebot ansehen
+                <span
+                    aria-hidden="true"
+                    className="transition-transform group-hover:translate-x-0.5"
+                >
+                    →
+                </span>
+            </span>
         </a>
     )
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────
+// ─── Hauptkomponente ───────────────────────────────────────────────────────
 
 interface DigistoreDealsProps {
-    /** Show filter tabs (default: true) */
+    /** Filter-Tabs anzeigen (Standard: true) */
     showFilters?: boolean
-    /** Featured mode: show only top picks */
+    /** Nur hervorgehobene Angebote zeigen */
     featured?: boolean
-    /** Max products to show */
+    /** Maximale Anzahl an Angeboten */
     maxItems?: number
 }
 
@@ -165,76 +127,75 @@ export default function DigistoreDeals({
     maxItems,
 }: DigistoreDealsProps) {
     const [activeCategory, setActiveCategory] =
-        useState<Digistore24Category | "all">("all")
+        useState<DigistoreOfferCategory | "all">("all")
 
-    const filtered =
-        featured || activeCategory === "all"
-            ? featured
-                ? getFeaturedDigistore24(maxItems ?? 4)
-                : maxItems
-                    ? ALL_DIGISTORE24_PRODUCTS.slice(0, maxItems)
-                    : ALL_DIGISTORE24_PRODUCTS
-            : getDigistore24ByCategory(activeCategory as Digistore24Category)
+    const source = featured
+        ? [...DIGISTORE_OFFERS].sort(
+              (a, b) => Number(Boolean(b.badge)) - Number(Boolean(a.badge))
+          )
+        : getDigistoreOffersByCategory(activeCategory)
 
-    const display = maxItems ? filtered.slice(0, maxItems) : filtered
+    const display = maxItems ? source.slice(0, maxItems) : source
 
     return (
         <section className="bg-surface py-12 sm:py-16">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                {/* Header */}
+                {/* ── Kopfbereich ─────────────────────────────────────────── */}
                 <div className="text-center">
-                    <span className="text-4xl">📚</span>
-                    <h2 className="mt-3 text-3xl font-bold tracking-tight text-text-primary">
-                        Spar-Ratgeber & digitale Produkte
+                    <span className="inline-flex items-center gap-2 rounded-full border border-gold-primary/30 bg-holz-dark/50 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-gold-primary">
+                        Anzeige · Digistore24-Partner
+                    </span>
+                    <h2 className="mt-4 text-3xl font-bold tracking-tight text-text-primary">
+                        Digitale Produkte rund ums Sparen
                     </h2>
                     <p className="mt-4 text-lg text-zinc-400">
-                        E-Books, Kurse und Vorlagen – damit Sparen richtig Spaß macht!{" "}
-                        <span className="font-semibold text-gold-primary">
-                            Bis zu 70% Provision
-                        </span>
+                        Ratgeber, Kurse und Werkzeuge – handverlesen aus dem
+                        Digistore24-Partnernetzwerk.
                     </p>
                 </div>
 
-                {/* Filter tabs */}
+                {/* ── Filter-Tabs ─────────────────────────────────────────── */}
                 {showFilters && !featured && (
                     <div className="mt-8 flex flex-wrap justify-center gap-2">
                         {CATEGORIES.map((cat) => (
                             <button
                                 key={cat.key}
+                                type="button"
                                 onClick={() => setActiveCategory(cat.key)}
-                                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${activeCategory === cat.key
-                                    ? "bg-gold-primary text-gold-dark shadow-md"
-                                    : "bg-gold-accent/50 text-zinc-400 hover:bg-gold-accent hover:text-gold-primary"
-                                    }`}
+                                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                                    activeCategory === cat.key
+                                        ? "bg-gold-primary text-surface"
+                                        : "bg-holz-dark/60 text-zinc-400 hover:bg-holz-dark hover:text-gold-primary"
+                                }`}
                             >
-                                <span>{cat.icon}</span>
+                                <span aria-hidden="true">{cat.icon}</span>
                                 <span>{cat.label}</span>
                             </button>
                         ))}
                     </div>
                 )}
 
-                {/* Product grid */}
+                {/* ── Angebots-Raster ─────────────────────────────────────── */}
                 <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {display.map((product) => (
-                        <DigistoreProductCard
-                            key={product.id}
-                            product={product}
+                    {display.map((offer) => (
+                        <DigistoreOfferCard
+                            key={offer.id}
+                            offer={offer}
+                            subid={`produktliste-${offer.id}`}
                         />
                     ))}
                 </div>
 
-                {/* View all link */}
-                {featured && (
-                    <div className="mt-8 text-center">
-                        <a
-                            href="/deals"
-                            className="inline-flex items-center gap-2 rounded-xl bg-gold-primary px-6 py-3 text-sm font-semibold text-gold-dark shadow-sm transition-all hover:bg-gold-primary/90 hover:scale-105 active:scale-95"
-                        >
-                            Alle Produkte entdecken 🚀
-                        </a>
-                    </div>
+                {display.length === 0 && (
+                    <p className="mt-8 text-center text-sm text-zinc-600">
+                        Keine Angebote in dieser Kategorie gefunden.
+                    </p>
                 )}
+
+                {/* ── Rechtlicher Hinweis ─────────────────────────────────── */}
+                <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">
+                    {DIGISTORE_DISCLOSURE_SHORT}
+                </p>
             </div>
         </section>
     )

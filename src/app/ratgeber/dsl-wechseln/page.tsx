@@ -3,6 +3,7 @@ import Link from "next/link"
 import { generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { generateAffiliateLink, getAffiliateLinkAttributes } from "@/lib/affiliate-links"
 import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
+import { DigistoreInlineBanner } from "@/components/affiliate/DigistoreBanner"
 
 const seo = buildSEOData({
     title: "DSL-Wechseln leicht gemacht – So sparst Du bis zu 240€ im Jahr",
@@ -210,6 +211,10 @@ export default function DslWechselnPage() {
                             categorySlug="dsl-internet"
                             subid="ratgeber-dsl-wechseln-inline"
                             headline="Verbrauch von Router & Standby-Geräten senken"
+                        />
+                        <DigistoreInlineBanner
+                            categorySlug="dsl-internet"
+                            subid="ratgeber-dsl-wechseln-digistore"
                         />
 
                         {/* FAQ */}

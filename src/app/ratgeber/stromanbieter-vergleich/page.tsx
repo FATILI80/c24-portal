@@ -3,6 +3,7 @@ import Link from "next/link"
 import { SEO_CONFIG, generatePageMetadata, buildSEOData, generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo"
 import { AFFILIATE_DISCLOSURE_TEXT, generateAffiliateLink } from "@/lib/affiliate-links"
 import { AmazonInlineBanner } from "@/components/affiliate/AmazonTopProducts"
+import { DigistoreInlineBanner } from "@/components/affiliate/DigistoreBanner"
 import type { Breadcrumb } from "@/types/affiliate"
 
 const SLUG = "ratgeber/stromanbieter-vergleich"
@@ -355,6 +356,10 @@ export default function StromanbieterVergleichPage() {
                 categorySlug="strom-gas"
                 subid="ratgeber-strom-wechseln-inline"
                 headline="Stromfresser im Haushalt entlarven"
+            />
+            <DigistoreInlineBanner
+                categorySlug="strom-gas"
+                subid="ratgeber-strom-wechseln-digistore"
             />
 
             {/* Final CTA */}
